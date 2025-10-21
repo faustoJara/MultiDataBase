@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # ------------------------------------------------------------------
+  # 1. Servicio MySQL
+  # Puerto: 3306 (estándar, fácil de conectar)
+  # ------------------------------------------------------------------
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mi_clave # Contraseña para el usuario 'root'
+      MYSQL_DATABASE: CENTROCUIDADOFAMILIAR # Nombre de la DB
+    ports:
+      - "3306:3306" # Mapea puerto local 3306 al puerto interno 3306
+
+  # ------------------------------------------------------------------
+  # 2. Servicio PostgreSQL
+  # Puerto: 5432 (estándar, evita el 5433 que estabas usando)
+  # ------------------------------------------------------------------
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres # Usuario por defecto
+      POSTGRES_PASSWORD: mi_clave # Clave para el usuario 'postgres'
+      POSTGRES_DB: CENTROCUIDADOFAMILIAR # Nombre de la DB
+    ports:
+      - "5433:5432" # Mapea puerto local 5432 al puerto interno 5432
+
+  # ------------------------------------------------------------------
+  # 3. Servicio MongoDB
+  # Puerto: 27017 (estándar)
+  # ------------------------------------------------------------------
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo_servicios_cuidado
+    restart: always
+    ports:
+      - "27017:27017" # Mapea puerto local 27017 al puerto interno 27017
+    # Opcional: Para persistencia de datos (mantener los datos tras reiniciar)
+    # volumes:
+    #   - mongo_data:/data/db
+
+# volumes:
+#   mongo_data:
