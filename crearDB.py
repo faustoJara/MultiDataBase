@@ -16,7 +16,7 @@ DB_CONFIG = {
     },
     'postgres': {
         'user': 'postgres',
-        'password': 'mi_clave_segura',
+        'password': 'mi_clave',
         'host': '127.0.0.1',
         'port': 5433
     },

@@ -17,7 +17,7 @@ services:
 
   # ------------------------------------------------------------------
   # 2. Servicio PostgreSQL
-  # Puerto: 5432 (estándar, evita el 5433 que estabas usando)
+  # Puerto: 5433
   # ------------------------------------------------------------------
   postgres-db:
     image: postgres:latest
@@ -28,7 +28,7 @@ services:
       POSTGRES_PASSWORD: mi_clave # Clave para el usuario 'postgres'
       POSTGRES_DB: CENTROCUIDADOFAMILIAR # Nombre de la DB
     ports:
-      - "5433:5432" # Mapea puerto local 5432 al puerto interno 5432
+      - "5433:5432" # Mapea puerto local 5433 al puerto interno 5432
 
   # ------------------------------------------------------------------
   # 3. Servicio MongoDB
