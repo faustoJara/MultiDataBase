@@ -1,0 +1,281 @@
+{
+    "metadata": {
+        "fecha_generacion": "2025-10-22T17:21:48.676753",
+        "descripcion": "Análisis discriminante que cruza variables socioeconómicas (Género, Renta) con la Calidad del Servicio (Puntuación) y el Costo (Precio/Subvención).",
+        "registros_analizados_con_resena": 26
+    },
+    "indicadores_clave_discriminacion": {
+        "puntuacion_promedio_por_genero": {
+            "Femenino": 3.6,
+            "Masculino": 3.3,
+            "Otro": 3.5
+        },
+        "puntuacion_promedio_por_grupo_renta": {
+            "Baja": 4.67,
+            "Media": 3.0,
+            "Alta": 3.7
+        }
+    },
+    "datos_discriminantes_crudos": [
+        {
+            "IDUsuario": 14,
+            "Barrio": "Ville",
+            "RentaPercapita": 51954.08,
+            "Genero": "Femenino",
+            "PrecioFinal": 76.58,
+            "SubvencionAplicada": 19.14,
+            "Puntuacion": 5,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 15,
+            "Barrio": "Ville",
+            "RentaPercapita": 39767.8,
+            "Genero": "Masculino",
+            "PrecioFinal": 36.64,
+            "SubvencionAplicada": 9.16,
+            "Puntuacion": 5,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 5,
+            "Barrio": "Ville",
+            "RentaPercapita": 31230.49,
+            "Genero": "Femenino",
+            "PrecioFinal": 49.98,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 3,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 6,
+            "Barrio": "Ville",
+            "RentaPercapita": 40138.39,
+            "Genero": "Masculino",
+            "PrecioFinal": 46.3,
+            "SubvencionAplicada": 11.57,
+            "Puntuacion": 4,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 13,
+            "Barrio": "Ville",
+            "RentaPercapita": 14092.48,
+            "Genero": "Femenino",
+            "PrecioFinal": 73.29,
+            "SubvencionAplicada": 18.32,
+            "Puntuacion": 4,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 15,
+            "Barrio": "Ville",
+            "RentaPercapita": 39767.8,
+            "Genero": "Masculino",
+            "PrecioFinal": 41.85,
+            "SubvencionAplicada": 4.65,
+            "Puntuacion": 4,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 1,
+            "Barrio": "Ville",
+            "RentaPercapita": 58557.18,
+            "Genero": "Masculino",
+            "PrecioFinal": 51.46,
+            "SubvencionAplicada": 12.87,
+            "Puntuacion": 2,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 17,
+            "Barrio": "Ville",
+            "RentaPercapita": 51784.14,
+            "Genero": "Masculino",
+            "PrecioFinal": 43.5,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 5,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 5,
+            "Barrio": "Ville",
+            "RentaPercapita": 31230.49,
+            "Genero": "Femenino",
+            "PrecioFinal": 47.77,
+            "SubvencionAplicada": 5.31,
+            "Puntuacion": 5,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 9,
+            "Barrio": "Ville",
+            "RentaPercapita": 42438.39,
+            "Genero": "Otro",
+            "PrecioFinal": 78.2,
+            "SubvencionAplicada": 8.69,
+            "Puntuacion": 2,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 5,
+            "Barrio": "Ville",
+            "RentaPercapita": 31230.49,
+            "Genero": "Femenino",
+            "PrecioFinal": 25.89,
+            "SubvencionAplicada": 2.88,
+            "Puntuacion": 4,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 20,
+            "Barrio": "Ville",
+            "RentaPercapita": 51090.05,
+            "Genero": "Otro",
+            "PrecioFinal": 42.77,
+            "SubvencionAplicada": 4.75,
+            "Puntuacion": 4,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 17,
+            "Barrio": "Ville",
+            "RentaPercapita": 51784.14,
+            "Genero": "Masculino",
+            "PrecioFinal": 91.79,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 4,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 15,
+            "Barrio": "Ville",
+            "RentaPercapita": 39767.8,
+            "Genero": "Masculino",
+            "PrecioFinal": 42.55,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 4,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 7,
+            "Barrio": "Ville",
+            "RentaPercapita": 21810.67,
+            "Genero": "Masculino",
+            "PrecioFinal": 29.97,
+            "SubvencionAplicada": 3.33,
+            "Puntuacion": 1,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 19,
+            "Barrio": "Ville",
+            "RentaPercapita": 12540.63,
+            "Genero": "Otro",
+            "PrecioFinal": 35.86,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 5,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 13,
+            "Barrio": "Ville",
+            "RentaPercapita": 14092.48,
+            "Genero": "Femenino",
+            "PrecioFinal": 74.91,
+            "SubvencionAplicada": 8.32,
+            "Puntuacion": 5,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 9,
+            "Barrio": "Ville",
+            "RentaPercapita": 42438.39,
+            "Genero": "Otro",
+            "PrecioFinal": 58.84,
+            "SubvencionAplicada": 6.54,
+            "Puntuacion": 5,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 2,
+            "Barrio": "Ville",
+            "RentaPercapita": 54292.29,
+            "Genero": "Femenino",
+            "PrecioFinal": 67.7,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 5,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 16,
+            "Barrio": "Ville",
+            "RentaPercapita": 24152.09,
+            "Genero": "Femenino",
+            "PrecioFinal": 44.79,
+            "SubvencionAplicada": 11.2,
+            "Puntuacion": 1,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 4,
+            "Barrio": "Ville",
+            "RentaPercapita": 31031.59,
+            "Genero": "Otro",
+            "PrecioFinal": 30.52,
+            "SubvencionAplicada": 3.39,
+            "Puntuacion": 2,
+            "TipoDependencia": "Niño"
+        },
+        {
+            "IDUsuario": 5,
+            "Barrio": "Ville",
+            "RentaPercapita": 31230.49,
+            "Genero": "Femenino",
+            "PrecioFinal": 60.91,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 1,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 8,
+            "Barrio": "Ville",
+            "RentaPercapita": 36016.68,
+            "Genero": "Otro",
+            "PrecioFinal": 83.76,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 3,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 16,
+            "Barrio": "Ville",
+            "RentaPercapita": 24152.09,
+            "Genero": "Femenino",
+            "PrecioFinal": 86.72,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 3,
+            "TipoDependencia": "Otro"
+        },
+        {
+            "IDUsuario": 17,
+            "Barrio": "Ville",
+            "RentaPercapita": 51784.14,
+            "Genero": "Masculino",
+            "PrecioFinal": 69.1,
+            "SubvencionAplicada": 17.27,
+            "Puntuacion": 1,
+            "TipoDependencia": "Mayor"
+        },
+        {
+            "IDUsuario": 7,
+            "Barrio": "Ville",
+            "RentaPercapita": 21810.67,
+            "Genero": "Masculino",
+            "PrecioFinal": 26.31,
+            "SubvencionAplicada": 0.0,
+            "Puntuacion": 3,
+            "TipoDependencia": "Niño"
+        }
+    ]
+}
