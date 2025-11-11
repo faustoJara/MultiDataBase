@@ -10,10 +10,10 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 0853 # Contraseña para el usuario 'root' y para Mi pc sera '0853'
+      MYSQL_ROOT_PASSWORD: mi_clave # Contraseña para el usuario 'root'
       MYSQL_DATABASE: CENTROCUIDADOFAMILIAR # Nombre de la DB
     ports:
-      - "3308:3308" # Mapea puerto local 3306 al puerto interno 3306
+      - "3306:3306" # Mapea puerto local 3306 al puerto interno 3306
 
   # ------------------------------------------------------------------
   # 2. Servicio PostgreSQL

@@ -9,7 +9,7 @@ DB_NAME = "CENTROCUIDADOFAMILIAR"
 DB_CONFIG = {
     'mysql': {
         'user': 'root',
-        'password': '0853',  # AJUSTAR mi_clave a 0853 
+        'password': 'mi_clave',   
         'host': '127.0.0.1',
         'port': 3306                    
     },
