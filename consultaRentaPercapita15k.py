@@ -8,7 +8,7 @@ from decimal import Decimal
 
 # --- CONFIGURACIÓN DE CONEXIÓN  ---
 DB_NAME = "centrocuidadofamiliar"
-RENT_THRESHOLD = 30000.00
+RENT_THRESHOLD = 15000.00
 DB_CONFIG = {
     'mysql': {
         'user': 'root',
@@ -27,7 +27,7 @@ DB_CONFIG = {
     'mongo_uri': "mongodb://127.0.0.1:27017/"
 }
 
-OUTPUT_FILE = "usuarias_renta_alta.json"
+OUTPUT_FILE = "usuarias_renta_15k.json"
 
 # Función para convertir tipos de datos que JSON no entiende
 def default_converter(obj):

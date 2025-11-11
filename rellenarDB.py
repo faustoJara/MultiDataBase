@@ -8,7 +8,7 @@ from datetime import timedelta
 # --- CONFIGURACIÓN Y FAKER ---
 DB_NAME = "CENTROCUIDADOFAMILIAR"
 DB_CONFIG = {
-    'mysql': { 'user': 'root', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 3306, 'database': DB_NAME }, # AJUSTAR
+    'mysql': { 'user': 'root', 'password': '0853', 'host': '127.0.0.1', 'port': 3306, 'database': DB_NAME }, # AJUSTAR a 0853 la clave mi_clave
     'postgres': { 'user': 'postgres', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 5433, 'database': DB_NAME }, # AJUSTAR
     'mongo_uri': "mongodb://127.0.0.1:27017/"
 }
