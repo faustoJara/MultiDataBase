@@ -4,13 +4,13 @@ from psycopg2 import sql
 from pymongo import MongoClient
 
 
-DB_NAME = "CENTROCUIDADOFAMILIAR"
+DB_NAME = "centrocuidadofamiliar"   # Nombre de la base de datos en minúsculas para PostgreSQL y MongoDB CENTROCUIDADOFAMILIAR
 DB_CONFIG = {
     'mysql': {
         'user': 'root',
-        'password': 'mi_clave',         
+        'password': '0853',         # AJUSTAR mi_clave a 0853
         'host': '127.0.0.1',
-        'port': 3306                    
+        'port': 3306                   # AJUSTAR puerto 3306 a 3308                    
     },
     'postgres': {
         'user': 'postgres',

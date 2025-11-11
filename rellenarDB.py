@@ -6,9 +6,9 @@ from faker import Faker
 from datetime import timedelta
 
 # --- CONFIGURACIÓN Y FAKER ---
-DB_NAME = "CENTROCUIDADOFAMILIAR"
+DB_NAME = "centrocuidadofamiliar"   # Nombre de la base de datos en minúsculas para PostgreSQL y MongoDB CENTROCUIDADOFAMILIAR
 DB_CONFIG = {
-    'mysql': { 'user': 'root', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 3306, 'database': DB_NAME }, # AJUSTAR
+    'mysql': { 'user': 'root', 'password': '0853', 'host': '127.0.0.1', 'port': 3306, 'database': DB_NAME }, # AJUSTAR mi_clave a 0853 y el puerto 3306 a 3308
     'postgres': { 'user': 'postgres', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 5433, 'database': DB_NAME }, # AJUSTAR
     'mongo_uri': "mongodb://127.0.0.1:27017/"
 }

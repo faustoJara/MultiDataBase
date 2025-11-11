@@ -1,5 +1,4 @@
-python3 -m venv .venv
-source .venv/bin/activate
-pip install mysql-connector-python 
-psycopg2-binary 
-pymongo faker
+mysql-connector-python
+psycopg2-binary
+pymongo
+Faker
