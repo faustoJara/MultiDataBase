@@ -1,0 +1,6 @@
+# Cliente oficial de Redis para Python
+redis>=4.4.0
+
+# === NUEVO ===
+# Conector de MySQL
+mysql-connector-python
