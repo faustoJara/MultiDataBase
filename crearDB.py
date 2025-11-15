@@ -9,7 +9,7 @@ DB_CONFIG = {
     'mysql': {
         'user': 'root',
         'password': '0853',         # AJUSTAR mi_clave a 0853
-        'host': '127.0.0.1',
+        'host': '127.0.0.1',  #  '127.0.0.1'
         'port': 3306                                     
     },
     'postgres': {
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS RESENA (
     FOREIGN KEY (IDServicio) REFERENCES SERVICIO(IDServicio),
     FOREIGN KEY (IDUsuario) REFERENCES USUARIA(IDUsuario)
 );
-"""
+""" 
 
 # PostgreSQL utiliza SERIAL y TIMESTAMP WITHOUT TIME ZONE/NUMERIC
 POSTGRES_TABLES_SQL = f"""

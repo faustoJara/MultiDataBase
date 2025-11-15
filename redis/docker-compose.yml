@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Servicio de Redis con módulos JSON y Search
   redis:
@@ -19,31 +17,27 @@ services:
     build:
       context: ./python-app  # Construye desde la carpeta ./python-app
     depends_on:
-      - redis                 # Espera a que Redis esté listo
+      - redis                  # Espera a que Redis esté listo
     environment:
       # Pasa el nombre del host de Redis al contenedor de Python
       - REDIS_HOST=redis
-      # === NUEVAS VARIABLES PARA MYSQL ===
+      # === VARIABLES PARA MYSQL ===
       - MYSQL_HOST=mysql # Nombre del contenedor MySQL
-      - MYSQL_DB=centrocuidadofamiliar # DATABASE
+      - MYSQL_DB=CENTROCUIDADOFAMILIAR # DATABASE
       - MYSQL_USER=root 
       - MYSQL_PASSWORD=0853 
     networks:
       - redis-net
       - mysql-external-net # Nueva red para conectarse a MySQL
     volumes:
-      # Monta la carpeta de la BD SQL en el contenedor
-      - ./python-app/db:/app/db
-    # Mantiene el contenedor corriendo para que podamos ejecutar scripts
-    command: tail -f /dev/null
-
+      - ./python-app:/app
 networks:
   redis-net:
     driver: bridge
-  # === DECLARAMOS LA RED EXTERNA DE MYSQL ===
+  # === RED EXTERNA DE MYSQL (Sintaxis moderna) ===
   mysql-external-net:
-    external:
-      name: multidatabase_default
+    name: multidatabase_default # Este es el nombre de tu red de MySQL
+    external: true
 
 volumes:
   redis_data:

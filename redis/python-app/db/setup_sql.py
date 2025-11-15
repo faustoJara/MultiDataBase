@@ -146,7 +146,8 @@ def main():
         for query in MYSQL_TABLES_SQL:
             try:
                 # Usamos multi=True para manejar sentencias que podrían estar separadas
-                for _ in cursor.execute(query, multi=True): pass
+               # for _ in cursor.execute(query, multi=True): pass
+               cursor.execute(query)
             except mysql.connector.Error as err:
                 # Ignoramos errores si la tabla ya existe, etc.
                 print(f"Advertencia al ejecutar: {err.msg}")
