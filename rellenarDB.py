@@ -9,8 +9,8 @@ from datetime import timedelta
 DB_NAME = "centrocuidadofamiliar"
 DB_CONFIG = {
     'mysql': { 'user': 'root', 'password': '0853', 'host': '127.0.0.1', 'port': 3306, 'database': DB_NAME }, # AJUSTAR a 0853 la clave mi_clave
-    'postgres': { 'user': 'postgres', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 5433, 'database': DB_NAME }, # AJUSTAR
-    'mongo_uri': "mongodb://127.0.0.1:27017/"
+    #'postgres': { 'user': 'postgres', 'password': 'mi_clave', 'host': '127.0.0.1', 'port': 5433, 'database': DB_NAME }, # AJUSTAR
+    #'mongo_uri': "mongodb://127.0.0.1:27017/"
 }
 NUM_BASE_RECORDS = 20 # Número base para usuarios, cuidadores, centros
 NUM_SERVICIOS = 50 # Un mayor número de servicios para mejor análisis
@@ -170,7 +170,7 @@ def populate_sql(db_type, config):
         print(f"  {db_type.upper()} ERROR: {err}")
     finally:
         if conn: conn.close()
-
+""" 
 def populate_mongodb(usuarios, cuidadores):
     print("-> Rellenando MongoDB...")
     try:
@@ -200,12 +200,14 @@ def populate_mongodb(usuarios, cuidadores):
 
 if __name__ == '__main__':
     print("--- INICIO DE POBLACIÓN DE BASES DE DATOS CON FAKER ---")
-    
+"""  
     # 1. Poblar MySQL
-    populate_sql('mysql', DB_CONFIG['mysql'])
+populate_sql('mysql', DB_CONFIG['mysql'])
     
+""" 
     # 2. Poblar PostgreSQL
     populate_sql('postgres', DB_CONFIG['postgres'])
     
     # 3. Poblar MongoDB
-    populate_mongodb(USUARIOS_DATA, CUIDADORES_DATA)
+    populate_mongodb(USUARIOS_DATA, CUIDADORES_DATA) 
+    """

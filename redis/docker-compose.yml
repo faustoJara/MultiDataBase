@@ -31,6 +31,8 @@ services:
       - mysql-external-net # Nueva red para conectarse a MySQL
     volumes:
       - ./python-app:/app
+    command: sleep 3600
+
 networks:
   redis-net:
     driver: bridge

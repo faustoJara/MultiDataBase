@@ -12,14 +12,14 @@ DB_CONFIG = {
         'host': '127.0.0.1',  #  '127.0.0.1'
         'port': 3306                                     
     },
-    'postgres': {
-        'user': 'postgres',
-        'password': 'mi_clave',         
-        'host': '127.0.0.1',
-        'port': 5433                    
-    },
-    'mongo_uri': "mongodb://127.0.0.1:27017/"
-}
+    #'postgres': {
+    #    'user': 'postgres',
+    #    'password': 'mi_clave',         
+    #    'host': '127.0.0.1',
+    #   'port': 5433                    
+    }
+    #'mongo_uri': "mongodb://127.0.0.1:27017/"
+#}
 
 
 
@@ -206,7 +206,7 @@ def create_mysql_structure():
         if conn and conn.is_connected():
             cursor.close()
             conn.close()
-
+""" 
 def create_postgres_structure():
     print("-> Creando estructura en PostgreSQL...")
     temp_conn = None
@@ -259,9 +259,9 @@ def create_mongodb_structure():
         
     except Exception as e:
         print(f" MongoDB ERROR: {e}")
-
+"""
 if __name__ == '__main__':
     print("--- INICIO DE CREACIÓN DE ESTRUCTURAS DE BASES DE DATOS ---")
     create_mysql_structure()
-    create_postgres_structure()
-    create_mongodb_structure()
+    #create_postgres_structure()
+    #create_mongodb_structure()

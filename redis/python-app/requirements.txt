@@ -1,4 +1,4 @@
-# Cliente oficial de Redis para Python
+#Redis
 redis[json,search]==5.0.7
 # Conector de MySQL
 mysql-connector-python

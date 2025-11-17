@@ -9,9 +9,9 @@ from redis.commands.search.indexDefinition import (
     IndexDefinition, IndexType
 )
 from redis.commands.search.query import Query
-from redis.commands.search.aggregation import (
-    AggregationRequest, AscSorting, DescSorting
-)
+# --- CORRECCIÓN DE IMPORTE (Nombre de clase) ---
+# Se renombró de 'AggregationRequest' a 'AggregateRequest' en v5
+from redis.commands.search.aggregation import AggregateRequest
 
 # --- Configuración de la Conexión ---
 # Obtenemos el host de Redis desde la variable de entorno
@@ -385,15 +385,16 @@ def req_20_group_by_indices(r):
         "Agregamos datos para contar cuántos productos hay por categoría.",
         "También calculamos el stock promedio por categoría.")
     try:
+        # --- CORRECCIÓN DE CÓDIGO (Nombre de clase) ---
         # Petición de agregación
-        req = AggregationRequest("*").\
+        req = AggregateRequest("*").\
                 group_by("@categoria",  # Agrupar por categoría
                          # Contar productos en el grupo
                          "@count(0)", 
                          # Calcular media de stock
                          "@avg($.stock)", "AS", "stock_promedio" 
                          ).\
-                sort_by(DescSorting("@count")) # Ordenar por conteo
+                sort_by(AggregateRequest.Desc("@count")) # <-- CORRECCIÓN DE CÓDIGO
         
         res = r.ft("idx:productos").aggregate(req)
         
@@ -459,7 +460,7 @@ def main():
     except redis.exceptions.ConnectionError as e:
         log("ERROR DE CONEXIÓN", 
             f"No se pudo conectar a Redis en {REDIS_HOST}:6379.",
-            "Asegúrate de que el contenedor de Docker 'redis_stack' esté corriendo.",
+            "Asegúrate de que el contenedor de Docker 'redis' esté corriendo.",
             f"Error: {e}")
     except Exception as e:
         log("ERROR INESPERADO", str(e))

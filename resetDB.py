@@ -63,7 +63,7 @@ def drop_postgres_database():
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
             WHERE pg_stat_activity.datname = '{DB_NAME}'
-              AND pid <> pg_backend_pid();
+            AND pid <> pg_backend_pid();
         """)
         
         # Eliminar si existe
