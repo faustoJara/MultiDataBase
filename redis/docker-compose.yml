@@ -25,7 +25,7 @@ services:
       - MYSQL_HOST=mysql # Nombre del contenedor MySQL
       - MYSQL_DB=CENTROCUIDADOFAMILIAR # DATABASE
       - MYSQL_USER=root 
-      - MYSQL_PASSWORD=0853 
+      - MYSQL_PASSWORD=0853
     networks:
       - redis-net
       - mysql-external-net # Nueva red para conectarse a MySQL

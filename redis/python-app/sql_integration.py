@@ -10,14 +10,15 @@ REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 
 # Leemos las variables de entorno (pasadas por docker-compose)
 DB_HOST = os.getenv("MYSQL_HOST", "localhost")
-DB_NAME = os.getenv("MYSQL_DB", "servicios_db")
+DB_NAME = os.getenv("MYSQL_DB", "CENTROCUIDADOFAMILIAR")
 DB_USER = os.getenv("MYSQL_USER", "root")
 DB_PASS = os.getenv("MYSQL_PASSWORD")
 
 # Función de ayuda para imprimir logs
 def log(titulo, *args):
     print(f"\n{'='*50}")
-    print(f"  {titulo.UPPER()}")
+    # CORREGIDO: .upper() en minúsculas
+    print(f"  {titulo.upper()}") 
     print(f"{'='*50}")
     for msg in args:
         print(f"  -> {msg}")
@@ -67,26 +68,37 @@ def req_21_sql_a_redis(r, conn):
         
         pipeline = r.pipeline()
         count_u = 0
-        for usuaria in usuarias_sql:
-            redis_key = f"usuaria:sql:{usuaria['IDUsuario']}"
-            pipeline.json().set(redis_key, "$", usuaria)
-            count_u += 1
+        if not usuarias_sql:
+            print("  -> No se encontraron USUARIAS en MySQL para migrar.")
+        else:
+            for usuaria in usuarias_sql:
+                redis_key = f"usuaria:sql:{usuaria['IDUsuario']}"
+                pipeline.json().set(redis_key, "$", usuaria)
+                count_u += 1
         
         # --- Migrar CUIDADORES ---
         cursor.execute("SELECT IDCuidador, Nombre, Apellido, Especialidad FROM CUIDADOR")
         cuidadores_sql = cursor.fetchall()
         
         count_c = 0
-        for cuidador in cuidadores_sql:
-            # Convertimos tipos de datos si es necesario (JSON prefiere tipos nativos)
-            redis_key = f"cuidador:sql:{cuidador['IDCuidador']}"
-            pipeline.json().set(redis_key, "$", cuidador)
-            count_c += 1
+        if not cuidadores_sql:
+            print("  -> No se encontraron CUIDADORES en MySQL para migrar.")
+        else:
+            for cuidador in cuidadores_sql:
+                # Convertimos tipos de datos si es necesario (JSON prefiere tipos nativos)
+                redis_key = f"cuidador:sql:{cuidador['IDCuidador']}"
+                pipeline.json().set(redis_key, "$", cuidador)
+                count_c += 1
             
         pipeline.execute()
+        
+        if count_u == 0 and count_c == 0:
+             log("21. RESULTADO", "No se encontraron datos en MySQL para migrar a Redis.")
+             return
+
         log("21. RESULTADO", f"{count_u} USUARIAS migradas de MySQL a Redis.",
             f"{count_c} CUIDADORES migrados de MySQL a Redis.",
-            f"Ejemplo clave: 'usuaria:sql:{usuarias_sql[0]['IDUsuario']}'")
+            f"Ejemplo clave: 'usuaria:sql:{usuarias_sql[0]['IDUsuario'] if usuarias_sql else 'N/A'}'")
 
     except Exception as e:
         log("21. ERROR", str(e))
