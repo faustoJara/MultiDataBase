@@ -394,7 +394,7 @@ def req_20_group_by_indices(r):
                          # Calcular media de stock
                          "@avg($.stock)", "AS", "stock_promedio" 
                          ).\
-                sort_by(AggregateRequest.Desc("@count")) # <-- CORRECCIÓN DE CÓDIGO
+                sort_by("count", asc=False) # <-- CORRECCIÓN DE CÓDIGO (Sintaxis de 'sort_by')
         
         res = r.ft("idx:productos").aggregate(req)
         
