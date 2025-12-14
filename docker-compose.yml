@@ -19,6 +19,7 @@ services:
   # 2. Servicio PostgreSQL
   # Puerto: 5433
   # ------------------------------------------------------------------
+  
   postgres-db:
     image: postgres:latest
     container_name: postgres
@@ -32,7 +33,7 @@ services:
 
   # ------------------------------------------------------------------
   # 3. Servicio MongoDB
-  # Puerto: 27017 (estándar)
+  # Puerto: 27017
   # ------------------------------------------------------------------
   mongo-db:
     image: mongo:latest
