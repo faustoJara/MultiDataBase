@@ -1,19 +1,27 @@
 import mysql.connector
 import time
+import sys
+import os
+from dotenv import load_dotenv
 
-# === CONFIGURACIÓN RDS ===
-# ¡SUSTITUYE ESTO CON TUS DATOS DEL LABORATORIO AWS!
-RDS_HOST = "database-1.cluster-ro-xxxxxx.us-east-1.rds.amazonaws.com" 
-RDS_USER = "admin"
-RDS_PASS = "tu_password_rds"
-DB_NAME = "CentroCuidadoNube" # La base de datos que vamos a crear
+# === CARGAR VARIABLES DEL .ENV ===
+load_dotenv()
+
+# Obtenemos las variables o usamos valores por defecto/error
+RDS_HOST = os.getenv("RDS_HOST")
+RDS_USER = os.getenv("RDS_USER")
+RDS_PASS = os.getenv("RDS_PASS")
+DB_NAME = os.getenv("RDS_DB_NAME", "CentroCuidadoNube")
+
+if not RDS_HOST or not RDS_PASS:
+    print("ERROR: No se encontraron las variables RDS_HOST o RDS_PASS en el archivo .env")
+    sys.exit(1)
 
 def log(titulo, mensaje):
-    print(f"\n{'='*50}\n  {titulo}\n{'='*50}")
+    print(f"\n{'='*60}\n  {titulo}\n{'='*60}")
     print(f" -> {mensaje}")
 
 def conectar_server():
-    # Conexión al servidor (sin base de datos específica) para poder crearla
     return mysql.connector.connect(
         host=RDS_HOST, user=RDS_USER, password=RDS_PASS
     )
@@ -27,21 +35,22 @@ def gestionar_rds():
     log("INICIO RDS", f"Conectando a {RDS_HOST}...")
     
     # 1. Crear Base de Datos
-    conn = conectar_server()
-    cursor = conn.cursor()
     try:
+        conn = conectar_server()
+        cursor = conn.cursor()
         cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME}")
-        log("CREAR DB", f"Base de datos '{DB_NAME}' verificada/creada.")
-    except Exception as e:
-        print(f"Error creando DB: {e}")
-    finally:
+        conn.commit()
+        log("1. CREAR DB", f"Base de datos '{DB_NAME}' verificada/creada.")
         conn.close()
+    except Exception as e:
+        print(f"Error conectando al servidor RDS: {e}")
+        return
 
     # 2. Crear Tablas e Insertar Datos
-    conn = conectar_db()
-    cursor = conn.cursor()
     try:
-        # Crear tabla
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS ReportesNube (
                 ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,30 +59,34 @@ def gestionar_rds():
                 Fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        log("CREAR TABLA", "Tabla 'ReportesNube' creada.")
+        log("2. CREAR TABLA", "Tabla 'ReportesNube' creada.")
 
-        # Insertar datos
-        datos = [
-            ('Mensual', 'Reporte de ingresos enero'),
-            ('Incidencia', 'Caída del servidor principal'),
-            ('Auditoria', 'Revisión anual completada')
-        ]
-        cursor.executemany("INSERT INTO ReportesNube (Tipo, Descripcion) VALUES (%s, %s)", datos)
-        conn.commit()
-        log("INSERTAR", "3 registros insertados en RDS.")
+        cursor.execute("SELECT COUNT(*) FROM ReportesNube")
+        if cursor.fetchone()[0] == 0:
+            datos = [
+                ('Mensual', 'Reporte de ingresos enero'),
+                ('Incidencia', 'Caída del servidor principal'),
+                ('Auditoria', 'Revisión anual completada'),
+                ('Mensual', 'Reporte de gastos febrero')
+            ]
+            cursor.executemany("INSERT INTO ReportesNube (Tipo, Descripcion) VALUES (%s, %s)", datos)
+            conn.commit()
+            log("3. INSERTAR", "Registros insertados en RDS.")
+        else:
+            log("3. INSERTAR", "La tabla ya tenía datos.")
 
-        # 3. Realizar 3 Consultas
+        # 4. Realizar 3 Consultas
         log("CONSULTA 1", "Obtener todos los reportes:")
         cursor.execute("SELECT * FROM ReportesNube")
         for row in cursor.fetchall():
             print(f"  Row: {row}")
 
-        log("CONSULTA 2", "Filtrar por Tipo = 'Incidencia':")
-        cursor.execute("SELECT Descripcion, Fecha FROM ReportesNube WHERE Tipo = 'Incidencia'")
+        log("CONSULTA 2", "Filtrar por Tipo = 'Mensual':")
+        cursor.execute("SELECT Descripcion, Fecha FROM ReportesNube WHERE Tipo = 'Mensual'")
         for row in cursor.fetchall():
-            print(f"  Incidencia: {row}")
+            print(f"  Mensual: {row}")
 
-        log("CONSULTA 3", "Contar total de reportes:")
+        log("CONSULTA 3", "Contar total:")
         cursor.execute("SELECT COUNT(*) FROM ReportesNube")
         total = cursor.fetchone()[0]
         print(f"  Total: {total}")
@@ -81,7 +94,8 @@ def gestionar_rds():
     except Exception as e:
         print(f"Error RDS: {e}")
     finally:
-        conn.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
 
 if __name__ == "__main__":
     gestionar_rds()

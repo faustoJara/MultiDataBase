@@ -1,0 +1,49 @@
+{
+    "origen": "AWS Lab Integration",
+    "estadisticas": {
+        "total_usuarios_activos_dynamo": 2,
+        "total_reportes_rds": 4
+    },
+    "datos": {
+        "usuarios_cloud": [
+            {
+                "Estado": "Activo",
+                "UsuarioID": "U300",
+                "Nombre": "Maria Alejandra",
+                "Email": "maria@test.com"
+            },
+            {
+                "Estado": "Activo",
+                "UsuarioID": "U100",
+                "Nombre": "Ana Sofia",
+                "Email": "ana@test.com"
+            }
+        ],
+        "reportes_sistema": [
+            {
+                "ID": 1,
+                "Tipo": "Mensual",
+                "Descripcion": "Reporte de ingresos enero",
+                "Fecha": "2025-12-14 18:47:40"
+            },
+            {
+                "ID": 2,
+                "Tipo": "Incidencia",
+                "Descripcion": "Caída del servidor principal",
+                "Fecha": "2025-12-14 18:47:40"
+            },
+            {
+                "ID": 3,
+                "Tipo": "Auditoria",
+                "Descripcion": "Revisión anual completada",
+                "Fecha": "2025-12-14 18:47:40"
+            },
+            {
+                "ID": 4,
+                "Tipo": "Mensual",
+                "Descripcion": "Reporte de gastos febrero",
+                "Fecha": "2025-12-14 18:47:40"
+            }
+        ]
+    }
+}
