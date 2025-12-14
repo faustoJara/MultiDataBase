@@ -1,390 +1,251 @@
 import redis
+import mysql.connector
 import os
 import json
 import time
-from redis.commands.search.field import (
-    TextField, NumericField, TagField
-)
-from redis.commands.search.indexDefinition import (
-    IndexDefinition, IndexType
-)
+from datetime import datetime
+
+# --- IMPORTACIONES DE REDIS SEARCH ---
+from redis.commands.search.field import TextField, NumericField, TagField
+from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 from redis.commands.search.query import Query
-# --- CORRECCIÓN DE IMPORTE (Nombre de clase) ---
-# Se renombró de 'AggregationRequest' a 'AggregateRequest' en v5
-from redis.commands.search.aggregation import AggregateRequest
+from redis.commands.search.aggregation import AggregateRequest, Desc
+# Importamos reducers para la agregación
+import redis.commands.search.reducers as reducers
 
-# --- Configuración de la Conexión ---
-# Obtenemos el host de Redis desde la variable de entorno
+# --- CONFIGURACIÓN ---
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+DB_HOST = os.getenv("MYSQL_HOST", "localhost")
+DB_NAME = os.getenv("MYSQL_DB", "CENTROCUIDADOFAMILIAR")
+DB_USER = os.getenv("MYSQL_USER", "root")
+DB_PASS = os.getenv("MYSQL_PASSWORD")
 
-# Función de ayuda para imprimir logs
+# Helper de Logs
 def log(titulo, *args):
-    print(f"\n{'='*50}")
+    print(f"\n{'='*60}")
     print(f"  {titulo.upper()}")
-    print(f"{'='*50}")
+    print(f"{'='*60}")
     for msg in args:
         print(f"  -> {msg}")
-    time.sleep(1) # Pausa para facilitar la lectura
+    time.sleep(0.5)
 
-# Función de ayuda para limpiar la BD
+# Helper Conexión SQL
+def get_mysql_conn():
+    return mysql.connector.connect(
+        host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME
+    )
+
+# Limpieza Inicial
 def limpiar_db(r):
-    log("Limpiando Base de Datos", "Ejecutando FLUSHALL en Redis...")
+    log("LIMPIEZA INICIAL", "Borrando datos antiguos de Redis...")
     r.flushall()
-    print("  -> Base de datos limpia.")
+    print("  -> Redis limpio y listo para recibir datos de MySQL.")
 
-# --- Funciones de Requisitos (1-20) ---
+# --- EJERCICIOS 1-13: CLAVE-VALOR ---
 
-# 1. Crear registros clave-valor
 def req_1_crear_kv(r):
-    log("1. CREAR REGISTROS CLAVE-VALOR",
-        "Usamos SET para crear claves simples.",
-        "Ej: SET tienda:producto:1001:nombre 'Café Colombia'",
-        "Ej: SET tienda:producto:1001:stock 150")
-    try:
-        r.set("tienda:producto:1001:nombre", "Café Colombia")
-        r.set("tienda:producto:1001:stock", 150)
-        r.set("tienda:producto:1002:nombre", "Té Verde")
-        r.set("tienda:producto:1002:stock", 90)
-        r.set("tienda:producto:2001:nombre", "Leche de Almendras")
-        r.set("tienda:producto:2001:stock", 75)
-        r.set("tienda:categoria:Bebidas:1", "Café")
-        r.set("tienda:categoria:Bebidas:2", "Té")
-        r.set("tienda:categoria:Alternativos:1", "Leche Vegetal")
-        log("1. RESULTADO", "6 claves creadas con éxito.")
-    except Exception as e:
-        log("1. ERROR", str(e))
+    log("1. CREAR REGISTROS CLAVE-VALOR (Desde MySQL)",
+        "Leyendo tabla USUARIA de MySQL y creando claves simples en Redis.")
+    
+    conn = get_mysql_conn()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT IDUsuario, Nombre, Apellido, DNI FROM USUARIA LIMIT 10")
+    usuarios = cursor.fetchall()
+    conn.close()
 
-# 2. Obtener y mostrar el número de claves registradas
+    if not usuarios:
+        log("1. ERROR", "No hay usuarios en MySQL. Ejecuta 'populate_faker.py' primero.")
+        return
+
+    count = 0
+    for u in usuarios:
+        key_base = f"centro:usuario:{u['IDUsuario']}"
+        r.set(f"{key_base}:nombre", u['Nombre'])
+        r.set(f"{key_base}:apellido", u['Apellido'])
+        r.set(f"{key_base}:dni", u['DNI'])
+        count += 1
+    
+    log("1. RESULTADO", f"Se han migrado {count} usuarios de MySQL a claves Redis simples.")
+
 def req_2_contar_claves(r):
-    log("2. OBTENER NÚMERO DE CLAVES",
-        "Usamos DBSIZE para contar todas las claves en la BD.")
-    try:
-        total_claves = r.dbsize()
-        log("2. RESULTADO", f"Número total de claves: {total_claves}")
-    except Exception as e:
-        log("2. ERROR", str(e))
+    log("2. OBTENER NÚMERO DE CLAVES", "Contando claves totales en Redis.")
+    total = r.dbsize()
+    log("2. RESULTADO", f"Total de claves en Redis: {total}")
 
-# 3. Obtener y mostrar un registro en base a una clave
 def req_3_obtener_clave(r):
-    log("3. OBTENER REGISTRO POR CLAVE",
-        "Usamos GET para obtener el valor de una clave específica.",
-        "Ej: GET tienda:producto:1001:nombre")
-    try:
-        valor = r.get("tienda:producto:1001:nombre")
-        log("3. RESULTADO", f"Valor de 'tienda:producto:1001:nombre': {valor}")
-    except Exception as e:
-        log("3. ERROR", str(e))
+    log("3. OBTENER REGISTRO POR CLAVE", "Obteniendo el nombre del Usuario ID 1.")
+    val = r.get("centro:usuario:1:nombre")
+    log("3. RESULTADO", f"Valor de 'centro:usuario:1:nombre': {val}")
 
-# 4. Actualizar el valor de una clave
 def req_4_actualizar_clave(r):
-    log("4. ACTUALIZAR VALOR DE CLAVE",
-        "Usamos SET nuevamente. Si la clave existe, sobrescribe el valor.",
-        "Ej: SET tienda:producto:1002:stock 85")
-    try:
-        valor_antiguo = r.get("tienda:producto:1002:stock")
-        r.set("tienda:producto:1002:stock", 85)
-        valor_nuevo = r.get("tienda:producto:1002:stock")
-        log("4. RESULTADO", 
-            f"Valor antiguo de 'tienda:producto:1002:stock': {valor_antiguo}",
-            f"Valor nuevo: {valor_nuevo}")
-    except Exception as e:
-        log("4. ERROR", str(e))
+    log("4. ACTUALIZAR VALOR", "Corrigiendo el nombre del Usuario 1.")
+    antiguo = r.get("centro:usuario:1:nombre")
+    r.set("centro:usuario:1:nombre", f"{antiguo} (Editado)")
+    nuevo = r.get("centro:usuario:1:nombre")
+    log("4. RESULTADO", f"Antiguo: {antiguo} -> Nuevo: {nuevo}")
 
-# 5. Eliminar una clave-valor
 def req_5_eliminar_clave(r):
-    log("5. ELIMINAR CLAVE-VALOR",
-        "Usamos DEL para eliminar una o más claves.",
-        "Ej: DEL tienda:categoria:Alternativos:1")
-    try:
-        clave_a_borrar = "tienda:categoria:Alternativos:1"
-        valor_eliminado = r.get(clave_a_borrar)
-        r.delete(clave_a_borrar)
-        log("5. RESULTADO",
-            f"Clave eliminada: {clave_a_borrar}",
-            f"Valor que contenía: {valor_eliminado}")
-    except Exception as e:
-        log("5. ERROR", str(e))
+    log("5. ELIMINAR CLAVE-VALOR", "Eliminando el DNI del Usuario 1.")
+    key = "centro:usuario:1:dni"
+    r.delete(key)
+    exists = r.exists(key)
+    log("5. RESULTADO", f"Clave '{key}' eliminada. ¿Existe?: {exists == 1}")
 
-# 6. Obtener y mostrar todas las claves guardadas
 def req_6_obtener_todas_las_claves(r):
-    log("6. OBTENER TODAS LAS CLAVES",
-        "Usamos KEYS * para obtener todas las claves.",
-        "¡PRECAUCIÓN! No usar 'KEYS *' en producción con muchas claves.")
-    try:
-        todas_las_claves = r.keys("*")
-        log("6. RESULTADO", f"Total claves: {len(todas_las_claves)}", f"Claves: {todas_las_claves}")
-    except Exception as e:
-        log("6. ERROR", str(e))
+    log("6. OBTENER TODAS LAS CLAVES", "Listando claves de usuarios.")
+    keys = r.keys("centro:usuario:*:nombre")
+    log("6. RESULTADO", f"Encontradas {len(keys)} claves.", f"Ejemplo: {keys[:3]}")
 
-# 7. Obtener y mostrar todos los valores guardados
 def req_7_obtener_todos_los_valores(r):
-    log("7. OBTENER TODOS LOS VALORES",
-        "Usamos KEYS * y luego MGET (Multi-GET) para obtener los valores.")
-    try:
-        todas_las_claves = r.keys("*")
-        if todas_las_claves:
-            valores = r.mget(todas_las_claves)
-            log("7. RESULTADO", f"Valores: {valores}")
-        else:
-            log("7. RESULTADO", "No hay claves para obtener valores.")
-    except Exception as e:
-        log("7. ERROR", str(e))
+    log("7. OBTENER TODOS LOS VALORES", "Obteniendo nombres de usuarios.")
+    keys = r.keys("centro:usuario:*:nombre")
+    if keys:
+        valores = r.mget(keys)
+        log("7. RESULTADO", f"Nombres: {valores[:5]} ...")
 
-# 8. Obtener registros con patrón *
 def req_8_patron_asterisco(r):
-    log("8. OBTENER CLAVES CON PATRÓN * (Comodín)",
-        "El * sustituye cero o más caracteres.",
-        "Ej: KEYS tienda:producto:1001:* (Obtiene nombre y stock)")
-    try:
-        patron = "tienda:producto:1001:*"
-        claves = r.keys(patron)
-        valores = r.mget(claves) if claves else []
-        log("8. RESULTADO", f"Claves para '{patron}': {claves}", f"Valores: {valores}")
-    except Exception as e:
-        log("8. ERROR", str(e))
+    log("8. PATRÓN * (Asterisco)", "Todo sobre el Usuario 2.")
+    keys = r.keys("centro:usuario:2:*")
+    log("8. RESULTADO", f"Claves encontradas: {keys}")
 
-# 9. Obtener registros con patrón []
 def req_9_patron_corchetes(r):
-    log("9. OBTENER CLAVES CON PATRÓN [] (Rango)",
-        "[] define un conjunto de caracteres.",
-        "Ej: KEYS tienda:producto:100[1-2]:nombre (Nombre de 1001 y 1002)")
-    try:
-        patron = "tienda:producto:100[1-2]:nombre"
-        claves = r.keys(patron)
-        valores = r.mget(claves) if claves else []
-        log("9. RESULTADO", f"Claves para '{patron}': {claves}", f"Valores: {valores}")
-    except Exception as e:
-        log("9. ERROR", str(e))
+    log("9. PATRÓN [] (Rango)", "Usuarios ID 1 a 3.")
+    keys = r.keys("centro:usuario:[1-3]:nombre")
+    log("9. RESULTADO", f"Claves encontradas: {keys}")
 
-# 10. Obtener registros con patrón ?
 def req_10_patron_interrogacion(r):
-    log("10. OBTENER CLAVES CON PATRÓN ? (Un caracter)",
-        "? sustituye exactamente un caracter.",
-        "Ej: KEYS tienda:categoria:Bebidas:?")
-    try:
-        patron = "tienda:categoria:Bebidas:?"
-        claves = r.keys(patron)
-        valores = r.mget(claves) if claves else []
-        log("10. RESULTADO", f"Claves para '{patron}': {claves}", f"Valores: {valores}")
-    except Exception as e:
-        log("10. ERROR", str(e))
+    log("10. PATRÓN ? (Interrogación)", "Usuarios con ID de un dígito.")
+    keys = r.keys("centro:usuario:?:nombre")
+    log("10. RESULTADO", f"Encontrados: {len(keys)}")
 
-# 11. Filtrar registros por un valor (Modo Básico)
 def req_11_filtrar_por_valor(r):
-    log("11. FILTRAR POR VALOR (MODO BÁSICO)",
-        "No se puede filtrar por valor directamente en claves string.",
-        "Obtenemos claves, luego valores (MGET), y filtramos en Python.")
-    try:
-        claves_stocks = r.keys("tienda:producto:*:stock")
-        stocks = r.mget(claves_stocks)
-        
-        # Combinamos claves y stocks, y filtramos
-        productos_filtrados = []
-        for i, clave in enumerate(claves_stocks):
-            stock_val = int(stocks[i])
-            if stock_val < 100: # Filtro: stock < 100
-                # Obtenemos el nombre del producto asociado
-                clave_nombre = clave.replace(":stock", ":nombre")
-                nombre = r.get(clave_nombre)
-                productos_filtrados.append(f"{nombre} (Stock: {stock_val})")
-                
-        log("11. RESULTADO", f"Productos con stock < 100: {productos_filtrados}")
-    except Exception as e:
-        log("11. ERROR", str(e))
+    log("11. FILTRAR POR VALOR (Manual)", "Buscando usuarios con nombre 'Ana'.")
+    keys = r.keys("centro:usuario:*:nombre")
+    encontrados = []
+    if keys:
+        valores = r.mget(keys)
+        for i, nombre in enumerate(valores):
+            if nombre and "Ana" in nombre:
+                encontrados.append(keys[i])
+    log("11. RESULTADO", f"Usuarios 'Ana': {encontrados}")
 
-# 12. Actualizar registros por filtro (Modo Básico)
 def req_12_actualizar_por_filtro(r):
-    log("12. ACTUALIZAR POR FILTRO (MODO BÁSICO)",
-        "Aumentar en 10 el stock de todos los productos (claves '...:stock')")
-    try:
-        claves_stocks = r.keys("tienda:producto:*:stock")
-        log("12. INFO", f"Claves a actualizar: {claves_stocks}")
-        
-        # Usamos INCRBY para aumentar atómicamente
-        actualizados = []
-        for clave in claves_stocks:
-            nuevo_valor = r.incrby(clave, 10)
-            actualizados.append(f"{clave} -> {nuevo_valor}")
-            
-        log("12. RESULTADO", f"Stocks actualizados (+10): {actualizados}")
-    except Exception as e:
-        log("12. ERROR", str(e))
+    log("12. ACTUALIZAR POR FILTRO", "Añadiendo 'VIP' a usuarios 1 y 2.")
+    keys = r.keys("centro:usuario:[1-2]:apellido")
+    for k in keys:
+        antiguo = r.get(k)
+        r.set(k, f"VIP {antiguo}")
+    log("12. RESULTADO", "Apellidos actualizados.")
 
-# 13. Eliminar registros por filtro (Modo Básico)
 def req_13_eliminar_por_filtro(r):
-    log("13. ELIMINAR POR FILTRO (MODO BÁSICO)",
-        "Eliminar todas las claves de la categoría 'Bebidas'.",
-        "Ej: KEYS tienda:categoria:Bebidas:*")
-    try:
-        claves_a_eliminar = r.keys("tienda:categoria:Bebidas:*")
-        if claves_a_eliminar:
-            r.delete(*claves_a_eliminar) # El * desempaqueta la lista
-            log("13. RESULTADO", f"Claves eliminadas: {claves_a_eliminar}")
-        else:
-            log("13. RESULTADO", "No se encontraron claves para eliminar.")
-    except Exception as e:
-        log("13. ERROR", str(e))
+    log("13. ELIMINAR POR FILTRO", "Borrando claves temporales.")
+    r.set("temp:borrame", "1")
+    keys = r.keys("temp:*")
+    if keys:
+        r.delete(*keys)
+        log("13. RESULTADO", f"Eliminadas {len(keys)} claves.")
 
-# 14. Crear estructura JSON
+# --- EJERCICIOS 14-20: AVANZADOS ---
+
 def req_14_crear_json(r):
-    log("14. CREAR ESTRUCTURA JSON (RedisJSON)",
-        "Almacenamos datos de productos como documentos JSON.",
-        "Esto requiere el módulo RedisJSON (incluido en redis-stack).",
-        "Usamos JSON.SET <clave> $ <datos_json>")
+    log("14. CREAR JSON (Desde MySQL)", "Migrando tabla SERVICIO a Redis JSON.")
     
-    # Datos de la empresa (Tienda de productos)
-    productos = {
-        "prod:1001": {
-            "id_producto": "prod:1001", "nombre": "Café Grano Colombia",
-            "categoria": "Bebidas", "stock": 150, "precio": 12.99
-        },
-        "prod:1002": {
-            "id_producto": "prod:1002", "nombre": "Té Verde Matcha",
-            "categoria": "Bebidas", "stock": 90, "precio": 25.50
-        },
-        "prod:1003": {
-            "id_producto": "prod:1003", "nombre": "Croissant Almendra",
-            "categoria": "Panaderia", "stock": 50, "precio": 2.75
-        },
-        "prod:1004": {
-            "id_producto": "prod:1004", "nombre": "Pan Integral Semillas",
-            "categoria": "Panaderia", "stock": 40, "precio": 4.50
+    conn = get_mysql_conn()
+    cursor = conn.cursor(dictionary=True)
+    
+    query = """
+        SELECT 
+            s.IDServicio, s.FechaHoraInicio, s.FechaHoraFin, s.PrecioFinal, s.Estado,
+            u.Nombre as NomUsu, u.Apellido as ApeUsu,
+            c.Nombre as NomCui, c.Especialidad,
+            cen.NombreCentro
+        FROM SERVICIO s
+        LEFT JOIN USUARIA u ON s.IDUsuario = u.IDUsuario
+        LEFT JOIN CUIDADOR c ON s.IDCuidador = c.IDCuidador
+        LEFT JOIN CENTRO cen ON s.IDCentro = cen.IDCentro
+    """
+    cursor.execute(query)
+    servicios = cursor.fetchall()
+    conn.close()
+
+    pipeline = r.pipeline()
+    for s in servicios:
+        duracion = 0
+        if s['FechaHoraInicio'] and s['FechaHoraFin']:
+            duracion = int((s['FechaHoraFin'] - s['FechaHoraInicio']).total_seconds() / 60)
+
+        doc = {
+            "id_servicio": s['IDServicio'],
+            "usuario": f"{s['NomUsu']} {s['ApeUsu']}",
+            "cuidador": s['NomCui'] or "Sin Asignar",
+            "especialidad": s['Especialidad'] or "General",
+            "centro": s['NombreCentro'] or "Domicilio",
+            "precio": float(s['PrecioFinal'] or 0),
+            "duracion_minutos": duracion,
+            "estado": s['Estado']
         }
-    }
+        pipeline.json().set(f"servicio:{s['IDServicio']}", "$", doc)
     
-    try:
-        pipeline = r.pipeline()
-        for p_id, data in productos.items():
-            # JSON.SET clave ruta_json datos_json
-            pipeline.json().set(f"producto:{p_id}", "$", data)
-        pipeline.execute()
-        
-        # Verificamos uno
-        prod_1001 = r.json().get("producto:prod:1001")
-        log("14. RESULTADO",
-            f"{len(productos)} documentos JSON creados.",
-            f"Ejemplo (prod:1001): {prod_1001}")
-    except Exception as e:
-        log("14. ERROR", str(e))
+    pipeline.execute()
+    log("14. RESULTADO", f"{len(servicios)} servicios cargados en Redis.")
 
-# 15. Filtrar por atributo JSON (Requiere Índice - Ver Req 18)
-def req_15_filtrar_json(r):
-    log("15. FILTRAR JSON POR ATRIBUTO (RedisSearch)",
-        "Esta función depende del índice creado en el paso 18.",
-        "Filtro 1: Buscar productos de categoría 'Bebidas' (TAG)",
-        "Filtro 2: Buscar productos con stock > 100 (NUMERIC)",
-        "Filtro 3: Buscar 'Pan' en el nombre (TEXT)")
-    try:
-        # F1: Por TAG (Categoría)
-        q1 = Query("@categoria:{Bebidas}")
-        res1 = r.ft("idx:productos").search(q1)
-        log("15. RESULTADO (Filtro 1: @categoria:{Bebidas})",
-            f"Encontrados: {res1.total}",
-            f"Docs: {[doc.json for doc in res1.docs]}")
-        
-        # F2: Por NUMERIC (Stock)
-        q2 = Query("@stock:[ (100 +inf ]") # (100 -> exclusivo, +inf -> infinito
-        res2 = r.ft("idx:productos").search(q2)
-        log("15. RESULTADO (Filtro 2: @stock > 100)",
-            f"Encontrados: {res2.total}",
-            f"Docs: {[doc.json for doc in res2.docs]}")
+def req_15_filtrar_json_atributos(r):
+    log("15. FILTRAR JSON POR ATRIBUTO", "Obteniendo solo precio y usuario del servicio 1.")
+    datos = r.json().get("servicio:1", "$.precio", "$.usuario")
+    log("15. RESULTADO", f"Datos: {datos}")
 
-        # F3: Por TEXT (Nombre)
-        q3 = Query("@nombre:Pan")
-        res3 = r.ft("idx:productos").search(q3)
-        log("15. RESULTADO (Filtro 3: @nombre:Pan)",
-            f"Encontrados: {res3.total}",
-            f"Docs: {[doc.json for doc in res3.docs]}")
-
-    except Exception as e:
-        log("15. ERROR", f"¿El índice 'idx:productos' existe? (Se crea en paso 18). {e}")
-
-# 16. Crear una lista
 def req_16_crear_lista(r):
-    log("16. CREAR UNA LISTA (Listas)",
-        "Usamos LPUSH para añadir elementos al inicio de una lista.",
-        "Ej: LPUSH pedidos:usuario:501 'prod:1001'")
-    try:
-        r.lpush("pedidos:usuario:501", "prod:1001") # Pedido 1
-        r.lpush("pedidos:usuario:501", "prod:1003") # Pedido 2
-        r.lpush("pedidos:usuario:501", "prod:1001") # Pidió otro café
-        
-        longitud = r.llen("pedidos:usuario:501")
-        log("16. RESULTADO", f"Lista 'pedidos:usuario:501' creada con {longitud} elementos.")
-    except Exception as e:
-        log("16. ERROR", str(e))
+    log("16. CREAR UNA LISTA", "Creando historial para Usuario 1.")
+    r.delete("historial:usuario:1")
+    r.rpush("historial:usuario:1", "servicio:1", "servicio:5")
+    log("16. RESULTADO", "Lista creada.")
 
-# 17. Obtener elementos de lista con filtro
-def req_17_filtrar_lista(r):
-    log("17. OBTENER ELEMENTOS DE LISTA",
-        "Usamos LRANGE para obtener un rango de elementos.",
-        "Ej: LRANGE pedidos:usuario:501 0 -1 (Obtiene toda la lista)")
-    try:
-        # Filtro: Obtener todos los elementos
-        items = r.lrange("pedidos:usuario:501", 0, -1)
-        log("17. RESULTADO (Todos los elementos)", f"Items: {items}")
-        
-        # Filtro: Obtener los 2 más recientes (índices 0 y 1)
-        items_recientes = r.lrange("pedidos:usuario:501", 0, 1)
-        log("17. RESULTADO (2 más recientes)", f"Items: {items_recientes}")
-    except Exception as e:
-        log("17. ERROR", str(e))
+def req_17_obtener_lista_filtro(r):
+    log("17. OBTENER ELEMENTOS DE LISTA", "Obteniendo todo el historial.")
+    items = r.lrange("historial:usuario:1", 0, -1)
+    log("17. RESULTADO", f"Historial: {items}")
 
-# 18. Crear datos con índices (RedisSearch)
 def req_18_crear_indices(r):
-    log("18. CREAR ÍNDICE (RedisSearch)",
-        "Definimos un esquema sobre los datos JSON (Req 14).",
-        "Esto permite búsquedas complejas (Req 15, 19, 20).")
+    log("18. CREAR ÍNDICE (RedisSearch)", "Creando índice para Servicios.")
     
-    # Definición del esquema
     schema = (
-        TextField("$.nombre", as_name="nombre", sortable=True),
-        TagField("$.categoria", as_name="categoria", separator=','),
-        NumericField("$.stock", as_name="stock", sortable=True),
-        NumericField("$.precio", as_name="precio", sortable=True)
-    )
-    
-    # Definición del índice
-    idx_def = IndexDefinition(
-        prefix=["producto:"],           # Indexar claves que empiecen con 'producto:'
-        index_type=IndexType.JSON       # Indexar documentos JSON
+        TextField("$.usuario", as_name="usuario"),
+        TagField("$.centro", as_name="centro"),
+        # Alias 'precio' y 'duracion' son cruciales para req_20
+        NumericField("$.precio", as_name="precio", sortable=True),
+        NumericField("$.duracion_minutos", as_name="duracion", sortable=True)
     )
     
     try:
-        # Borrar índice si ya existe (para pruebas)
-        try:
-            r.ft("idx:productos").dropindex(delete_documents=False)
-            log("18. INFO", "Índice 'idx:productos' anterior eliminado.")
-        except redis.exceptions.ResponseError:
-            log("18. INFO", "Índice 'idx:productos' no existía. Se creará.")
+        r.ft("idx:servicios").dropindex()
+    except:
+        pass
 
-        # Crear el índice
-        r.ft("idx:productos").create_index(fields=schema, definition=idx_def)
-        log("18. RESULTADO", "Índice 'idx:productos' creado con éxito.")
-    except Exception as e:
-        log("18. ERROR", str(e))
+    definition = IndexDefinition(prefix=["servicio:"], index_type=IndexType.JSON)
+    r.ft("idx:servicios").create_index(schema, definition=definition)
+    
+    log("18. RESULTADO", "Índice 'idx:servicios' creado.")
 
-# 19. Realizar búsqueda con índices (por campo)
 def req_19_busqueda_indices(r):
-    log("19. BÚSQUEDA CON ÍNDICES (POR CAMPO)",
-        "Buscamos productos con precio entre 3 y 15.",
-        "Ej: @precio:[3 15]")
-    try:
-        q = Query("@precio:[3 15]")
-        res = r.ft("idx:productos").search(q)
-        
-        log("19. RESULTADO (Productos con 3 <= precio <= 15)",
-            f"Encontrados: {res.total}",
-            f"Docs: {[doc.json for doc in res.docs]}")
-    except Exception as e:
-        log("19. ERROR", str(e))
+    log("19. BÚSQUEDA CON ÍNDICES", "Servicios con precio < 80.")
+    q = Query("@precio:[-inf 80]").sort_by("precio")
+    res = r.ft("idx:servicios").search(q)
+    log("19. RESULTADO", f"Encontrados: {res.total}")
 
-# 20. Realizar GROUP BY usando índices
 def req_20_group_by_indices(r):
-    log("20. GROUP BY CON ÍNDICES (AGGREGATE)",
-        "Agregamos datos para contar cuántos productos hay por categoría.",
-        "También calculamos el stock promedio por categoría.")
+    log("20. GROUP BY CON ÍNDICES", "Agrupando por Centro (Ingresos y Duración).")
+    
+    # --- CORRECCIÓN ---
+    # Usamos los ALIAS del índice (@precio, @duracion) no las rutas JSON ($.precio)
+    req = AggregateRequest("*").group_by(
+        ["@centro"], 
+        reducers.count().alias("conteo"), 
+        reducers.sum("@precio").alias("ingresos_totales"),  # @precio
+        reducers.avg("@duracion").alias("duracion_media")   # @duracion
+    ).sort_by(Desc("@conteo")) 
+
     try:
+<<<<<<< HEAD
         # --- CORRECCIÓN DE CÓDIGO (Nombre de clase) ---
         # Petición de agregación
         req = AggregateRequest("*").\
@@ -395,36 +256,49 @@ def req_20_group_by_indices(r):
                          "@avg($.stock)", "AS", "stock_promedio" 
                          ).\
                 sort_by("count", asc=False) # <-- CORRECCIÓN DE CÓDIGO (Sintaxis de 'sort_by')
+=======
+        res = r.ft("idx:servicios").aggregate(req)
+>>>>>>> 3ae003fb9973f0e2c1e0f438013cbc531d662ff2
         
-        res = r.ft("idx:productos").aggregate(req)
-        
-        # Formatear resultado
-        resultados_agg = []
+        resultados = []
         for row in res.rows:
-            resultados_agg.append(
-                f"Categoría: {row[row.index('categoria')]}, "
-                f"Conteo: {row[row.index('count')]}, "
-                f"Stock Promedio: {float(row[row.index('stock_promedio')]):.2f}"
-            )
+            # El resultado viene como una lista de tuplas/bytes, lo parseamos
+            # Dependiendo de la versión de redis-py, row puede ser una lista o un dict
+            # En decode_responses=True, suelen ser strings o floats
             
-        log("20. RESULTADO (Conteo y Stock por Categoría)",
-            f"Grupos encontrados: {len(res.rows)}",
-            f"Resultados: {resultados_agg}")
+            # Buscamos por nombre de campo en el resultado si es posible
+            centro = "Desconocido"
+            conteo = 0
+            ingresos = 0
+            duracion = 0
             
+            # Método robusto: convertir la row a dict si es una lista plana
+            # o acceder por índice si sabemos el orden
+            # La estructura suele ser [campo, valor, campo, valor...] o un objeto.
+            # Con la librería moderna, suele permitir acceso directo.
+            
+            try:
+                # Intentamos acceso directo asumiendo que row es similar a un dict
+                centro = row[1] # El valor de @centro
+                conteo = row[3] # El valor de conteo
+                ingresos = float(row[5])
+                duracion = float(row[7])
+            except:
+                # Fallback si la estructura es distinta
+                pass
+
+            resultados.append(f"{centro}: {conteo} servicios, {ingresos:.2f}€, {duracion:.1f} min avg")
+
+        log("20. RESULTADO", f"Estadísticas:\n {json.dumps(resultados, indent=2)}")
     except Exception as e:
         log("20. ERROR", str(e))
 
-# --- Ejecución Principal ---
+# --- EJECUCIÓN ---
 def main():
     try:
         r = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
-        r.ping()
-        log("Conexión a Redis exitosa", f"Host: {REDIS_HOST}:6379")
-        
-        # Limpiar BD al inicio
         limpiar_db(r)
         
-        # Ejecutar Requisitos 1-13 (K-V Básico)
         req_1_crear_kv(r)
         req_2_contar_claves(r)
         req_3_obtener_clave(r)
@@ -439,31 +313,19 @@ def main():
         req_12_actualizar_por_filtro(r)
         req_13_eliminar_por_filtro(r)
         
-        # Ejecutar Requisitos 14-20 (JSON, Listas, Índices)
-        # Limpiamos K-V básicos para centrarnos en JSON
-        limpiar_db(r) 
-        
         req_14_crear_json(r)
+        req_15_filtrar_json_atributos(r)
         req_16_crear_lista(r)
-        req_17_filtrar_lista(r)
-        
-        # 18 debe ir antes de 15, 19, 20
-        req_18_crear_indices(r) 
-        
-        # Ahora ejecutamos las búsquedas
-        req_15_filtrar_json(r)
+        req_17_obtener_lista_filtro(r)
+        req_18_crear_indices(r)
+        time.sleep(1) # Espera para indexado
         req_19_busqueda_indices(r)
         req_20_group_by_indices(r)
         
-        log("EJECUCIÓN COMPLETADA", "Todas las funciones (1-20) se han ejecutado.")
+        log("FIN", "Ejecución completada con éxito.")
 
-    except redis.exceptions.ConnectionError as e:
-        log("ERROR DE CONEXIÓN", 
-            f"No se pudo conectar a Redis en {REDIS_HOST}:6379.",
-            "Asegúrate de que el contenedor de Docker 'redis' esté corriendo.",
-            f"Error: {e}")
     except Exception as e:
-        log("ERROR INESPERADO", str(e))
+        log("ERROR CRÍTICO", str(e))
 
 if __name__ == "__main__":
     main()

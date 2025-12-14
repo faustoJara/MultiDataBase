@@ -4,12 +4,13 @@ import random
 from faker import Faker
 from datetime import datetime, timedelta
 
-# --- CONFIGURACIÓN ---
-# Usamos las variables de entorno del contenedor
+# === CONFIGURACIÓN ===
+# Usamos las variables de entorno que Docker inyecta
 DB_HOST = os.getenv("MYSQL_HOST", "mysql")
 DB_NAME = os.getenv("MYSQL_DB", "CENTROCUIDADOFAMILIAR")
 DB_USER = os.getenv("MYSQL_USER", "root")
-DB_PASS = os.getenv("MYSQL_PASSWORD", "0853")
+# Contraseña fija para asegurar conexión si la env falla o usamos la del docker-compose
+DB_PASS = os.getenv("MYSQL_PASSWORD", "0853") 
 
 NUM_BASE_RECORDS = 20 
 NUM_SERVICIOS = 50
@@ -30,21 +31,18 @@ def main():
         conn = connect()
         cursor = conn.cursor()
 
-        # Limpieza previa (Opcional: quita los comentarios si quieres borrar todo antes)
-        print(" -> Limpiando datos antiguos...")
+        print(" -> Limpiando tablas antiguas...")
         cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
-        cursor.execute("TRUNCATE TABLE RESENA") 
-        cursor.execute("TRUNCATE TABLE TRANSACCION")
-        cursor.execute("TRUNCATE TABLE SERVICIO") 
-        cursor.execute("TRUNCATE TABLE DEPENDIENTE")
-        cursor.execute("TRUNCATE TABLE CUIDADOR") 
-        cursor.execute("TRUNCATE TABLE CENTRO") 
-        cursor.execute("TRUNCATE TABLE USUARIA") 
-        cursor.execute("TRUNCATE TABLE REGISTRO_TIEMPO") 
+        tablas = ["RESENA", "TRANSACCION", "SERVICIO", "DEPENDIENTE", "CUIDADOR", "CENTRO", "USUARIA", "REGISTRO_TIEMPO"]
+        for t in tablas:
+            try:
+                cursor.execute(f"TRUNCATE TABLE {t}")
+            except:
+                pass
         cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
 
-        # --- 1. Insertar USUARIOS ---
-        print(" -> Generando Usuarios...")
+        # 1. Insertar USUARIOS
+        print(" -> Creando Usuarios...")
         usuarios_ids = []
         for _ in range(NUM_BASE_RECORDS):
             sql = "INSERT INTO USUARIA (Nombre, Apellido, DNI, FechaNacimiento, Barrio, RentaPercapita, Telefono, Email, Genero) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -52,8 +50,8 @@ def main():
             cursor.execute(sql, val)
             usuarios_ids.append(cursor.lastrowid)
 
-        # --- 2. Insertar DEPENDIENTES ---
-        print(" -> Generando Dependientes...")
+        # 2. Insertar DEPENDIENTES
+        print(" -> Creando Dependientes...")
         dependientes_ids = []
         for uid in usuarios_ids:
             sql = "INSERT INTO DEPENDIENTE (IDUsuario, Nombre, Apellido, TipoDependencia, FechaNacimiento, PerfilMedico) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -61,8 +59,8 @@ def main():
             cursor.execute(sql, val)
             dependientes_ids.append(cursor.lastrowid)
 
-        # --- 3. Insertar CUIDADORES ---
-        print(" -> Generando Cuidadores...")
+        # 3. Insertar CUIDADORES
+        print(" -> Creando Cuidadores...")
         cuidadores_ids = []
         for _ in range(NUM_BASE_RECORDS):
             sql = "INSERT INTO CUIDADOR (Nombre, Apellido, DNI, Telefono, Disponibilidad, Especialidad) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -70,8 +68,8 @@ def main():
             cursor.execute(sql, val)
             cuidadores_ids.append(cursor.lastrowid)
 
-        # --- 4. Insertar CENTROS ---
-        print(" -> Generando Centros...")
+        # 4. Insertar CENTROS
+        print(" -> Creando Centros...")
         centros_ids = []
         for _ in range(5):
             sql = "INSERT INTO CENTRO (NombreCentro, Direccion, DescripcionCentro, CapacidadMaxima) VALUES (%s, %s, %s, %s)"
@@ -79,19 +77,17 @@ def main():
             cursor.execute(sql, val)
             centros_ids.append(cursor.lastrowid)
 
-        # --- 5. Insertar SERVICIOS (Con fechas válidas para calcular tiempo) ---
-        print(f" -> Generando {NUM_SERVICIOS} Servicios...")
+        # 5. Insertar SERVICIOS (Crucial para el ejercicio de tiempo)
+        print(f" -> Creando {NUM_SERVICIOS} Servicios con tiempos...")
         for _ in range(NUM_SERVICIOS):
             u_id = random.choice(usuarios_ids)
-            # Intentar buscar un dependiente de este usuario (simplificado)
-            # Si no hay coincidencia directa, asignamos uno al azar para no romper la FK en este ejemplo rápido
             d_id = random.choice(dependientes_ids) 
             c_id = random.choice(cuidadores_ids)
             ce_id = random.choice(centros_ids)
             
-            # Generar fechas coherentes (Fin > Inicio)
+            # Generar fechas: Inicio hace poco, Fin unas horas después
             inicio = fake.date_time_between(start_date='-1y', end_date='now')
-            duracion_horas = random.randint(1, 8)
+            duracion_horas = random.randint(1, 5)
             fin = inicio + timedelta(hours=duracion_horas)
             
             precio = round(random.uniform(20.00, 100.00), 2)
@@ -105,11 +101,10 @@ def main():
             cursor.execute(sql, val)
 
         conn.commit()
-        print(f"✅ ¡ÉXITO! Se han insertado {NUM_SERVICIOS} servicios correctamente en MySQL.")
-        print("Ahora puedes ejecutar 'extended_app.py' para procesarlos con Redis.")
+        print(f"\n✅ ¡ÉXITO! {NUM_SERVICIOS} servicios insertados. Listo para Redis.")
 
     except mysql.connector.Error as err:
-        print(f"❌ Error MySQL: {err}")
+        print(f"\n❌ Error MySQL: {err}")
     finally:
         if conn: conn.close()
 
