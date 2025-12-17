@@ -1,54 +1,28 @@
 [
     {
-        "_id": "6942dab27535bc6c1b6822ea",
-        "titulo": "Message act",
+        "_id": "6942def70cfa5d64d150f1a9",
+        "titulo": "Multi-channeled bifurcated analyzer",
         "plataforma": "Netflix",
-        "temporadas": 4,
-        "genero": [
-            "Terror",
-            "Drama"
-        ],
-        "puntuacion": 9.6,
-        "finalizada": true,
-        "año_estreno": 2010
-    },
-    {
-        "_id": "6942dab27535bc6c1b6822f0",
-        "titulo": "Series growth social",
-        "plataforma": "Netflix",
-        "temporadas": 14,
-        "genero": [
-            "Sci-Fi",
-            "Drama",
-            "Acción"
-        ],
-        "puntuacion": 9.2,
-        "finalizada": true,
-        "año_estreno": 2017
-    },
-    {
-        "_id": "6942dab27535bc6c1b6822f7",
-        "titulo": "Charge science",
-        "plataforma": "Netflix",
-        "temporadas": 1,
+        "temporadas": 13,
         "genero": [
             "Terror"
         ],
-        "puntuacion": 9.5,
+        "puntuacion": 9.1,
         "finalizada": false,
-        "año_estreno": 2022
+        "año_estreno": 2002
     },
     {
-        "_id": "6942dab27535bc6c1b6822ff",
-        "titulo": "Produce policy",
+        "_id": "6942def70cfa5d64d150f1b5",
+        "titulo": "Self-enabling 24hour leverage",
         "plataforma": "Netflix",
-        "temporadas": 7,
+        "temporadas": 3,
         "genero": [
             "Comedia",
-            "Terror"
+            "Acción",
+            "Sci-Fi"
         ],
-        "puntuacion": 9.9,
-        "finalizada": true,
-        "año_estreno": 2015
+        "puntuacion": 9.1,
+        "finalizada": false,
+        "año_estreno": 2023
     }
 ]

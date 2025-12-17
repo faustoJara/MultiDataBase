@@ -1,49 +1,69 @@
 import pymongo
 import random
 import json
-from faker import Faker
-from bson import ObjectId
-from urllib.parse import quote_plus
 import os 
-# 1. Configuración y Conexion
-# ---------------------------------------------------------
-usuario=os.getenv("USUARIO_MONGO")
-passw=os.getenv("PASSWORD_MONGO")
+from faker import Faker
+from bson.objectid import ObjectId # Importación correcta de ObjectId
+from urllib.parse import quote_plus
+from dotenv import load_dotenv # Herramienta para leer .env
 
-user = quote_plus(usuario)
-password= quote_plus(passw)
-MONGO_URI = f"mongodb+srv://{user}:{password}@cluster0.lgcffpl.mongodb.net/?appName=Cluster0"
+# =========================================================
+# 1. Configuración y Conexion
+# =========================================================
+
+# Cargar las variables de entorno
+load_dotenv() 
+usuario = os.getenv("USUARIO_MONGO")
+passw = os.getenv("PASSWORD_MONGO")
+
+if not usuario or not passw:
+    print("❌ Error: MONGO_USER o MONGO_PASS no encontrados en el archivo .env")
+    exit()
+
+# Codificación de credenciales para la URI
+user_encoded = quote_plus(usuario)
+pass_encoded = quote_plus(passw)
+
+MONGO_URI = f"mongodb+srv://{user_encoded}:{pass_encoded}@cluster0.lgcffpl.mongodb.net/?appName=Cluster0"
 
 try:
     client = pymongo.MongoClient(MONGO_URI)
     db = client["TV_StreamDB"]
-    collection = db["series"]
     
-    # Limpiamos la colección antes de empezar para no duplicar datos si corres el script varias veces
-    collection.delete_many({})
-    print("✅ Conexión exitosa y colección limpia.")
+    # Colección principal
+    collection_series = db["series"]
+    
+    # Nueva colección para el punto 6
+    collection_produccion = db["detalles_produccion"] 
+    
+    # Limpiamos ambas colecciones antes de empezar
+    collection_series.delete_many({})
+    collection_produccion.delete_many({})
+    print("✅ Conexión exitosa y colecciones (series, detalles_produccion) limpias.")
 
 except Exception as e:
     print(f"❌ Error de conexión: {e}")
     exit()
 
-# Inicializamos Faker
+# Inicializamos Faker y Listas auxiliares
 fake = Faker()
-
-# Listas auxiliares para dar realismo
 PLATAFORMAS = ["Netflix", "HBO Max", "Disney+", "Amazon Prime", "Apple TV+"]
 GENEROS = ["Sci-Fi", "Drama", "Comedia", "Acción", "Terror", "Documental", "Thriller"]
+PAISES = ["EE.UU.", "Reino Unido", "Corea del Sur", "España", "Alemania", "Japón", "Canadá"]
+# Nombres de ejemplo para el reparto
+NOMBRES_ACTORES = [fake.name() for _ in range(50)]
 
+# =========================================================
 # 2. Generación de Datos
-# ---------------------------------------------------------
+# =========================================================
 
 def generar_serie_base():
     """Genera un diccionario con la estructura base."""
+    # Usamos un título único y predecible para el ejemplo
     return {
-        "titulo": fake.sentence(nb_words=3).replace(".", ""), # Títulos estilo lorem ipsum
+        "titulo": fake.unique.catch_phrase().replace(".", ""), 
         "plataforma": random.choice(PLATAFORMAS),
         "temporadas": random.randint(1, 15),
-        # Seleccionamos entre 1 y 3 géneros al azar
         "genero": random.sample(GENEROS, k=random.randint(1, 3)), 
         "puntuacion": round(random.uniform(5.0, 10.0), 1),
         "finalizada": random.choice([True, False]),
@@ -57,60 +77,142 @@ print("🔄 Generando 50 series completas...")
 for _ in range(50):
     series_data.append(generar_serie_base())
 
-
-
-# B) Insertar 10 series con datos faltantes
-print("🔄 Generando 10 series incompletas...")
+# B) Insertar 10 series con datos faltantes (específicamente la puntuación)
+print("🔄 Generando 10 series incompletas (algunas sin puntuación)...")
 campos_posibles = ["puntuacion", "año_estreno", "temporadas", "genero"]
 
 for _ in range(10):
     serie = generar_serie_base()
-    # Eliminamos un campo aleatorio para cumplir el requerimiento
-    campo_a_borrar = random.choice(campos_posibles)
-    del serie[campo_a_borrar]
+    # Aseguramos que al menos 5 series no tengan "puntuacion" para probar el punto 5
+    if _ < 5:
+        del serie["puntuacion"]
+    else:
+        campo_a_borrar = random.choice(campos_posibles)
+        del serie[campo_a_borrar]
+        
     series_data.append(serie)
 
-# Inserción masiva (Bulk insert es más eficiente)
+# Inserción masiva
 if series_data:
-    collection.insert_many(series_data)
-    print(f"✅ Se han insertado {len(series_data)} documentos en total.")
+    collection_series.insert_many(series_data)
+    print(f"✅ Se han insertado {len(series_data)} documentos en 'series' en total.")
 
-# 3. Consultas
-# ---------------------------------------------------------
+# =========================================================
+# 5. Media de Puntuación (Aggregations)
+# =========================================================
 
-# A. Maratones Largas: > 5 temporadas y puntuación > 8.0
-query_maratones = {
-    "temporadas": {"$gt": 5},
-    "puntuacion": {"$gt": 8.0}
-}
+print("\n--- 5. Obtener media de puntuación ---")
 
-# B. Joyas Recientes de Comedia: Género "Comedia" y año >= 2020
-query_comedias = {
-    "genero": "Comedia",  # MongoDB busca automáticamente dentro del array
-    "año_estreno": {"$gte": 2020}
-}
+# Pipeline de agregación para calcular la media, excluyendo documentos sin el campo 'puntuacion'
+pipeline_media = [
+    # 1. Sólo considera documentos que tengan el campo 'puntuacion'
+    {"$match": {"puntuacion": {"$exists": True}}}, 
+    # 2. Agrupa todos los documentos restantes (id: null) y calcula la media
+    {"$group": {"_id": None, "media_puntuacion": {"$avg": "$puntuacion"}}} 
+]
 
-# C. Contenido Finalizado: finalizada es True
-query_finalizadas = {
-    "finalizada": True
-}
+try:
+    resultado_media = list(collection_series.aggregate(pipeline_media))
+    
+    if resultado_media:
+        media = resultado_media[0]["media_puntuacion"]
+        print(f"📊 La media de puntuación de todas las series (con puntuación registrada) es: {media:.2f}")
+    else:
+        print("⚠️ No se encontraron series con el campo 'puntuacion' para calcular la media.")
 
-# D. Inventada: "Originales de Netflix Aclamados"
-# Series de Netflix con puntuación perfecta o casi perfecta (>= 9.0)
-query_netflix_top = {
-    "plataforma": "Netflix",
-    "puntuacion": {"$gte": 9.0}
-}
+except Exception as e:
+    print(f"❌ Error al calcular la media: {e}")
 
+
+# =========================================================
+# 6. Unificar con otra colección (Creación y Lookup)
+# =========================================================
+
+print("\n--- 6. Unificar con otra colección ---")
+
+# 6.1 Crear e insertar documentos en detalles_produccion
+
+# 1. Obtener todos los títulos de la colección series
+titulos_series = collection_series.find({}, {"_id": 0, "titulo": 1})
+titulos_list = [doc["titulo"] for doc in titulos_series]
+
+detalles_produccion_data = []
+
+for titulo in titulos_list:
+    detalles = {
+        "titulo": titulo, # Campo de enlace (join key)
+        "pais_origen": random.choice(PAISES),
+        "reparto_principal": random.sample(NOMBRES_ACTORES, k=random.randint(3, 5)),
+        # Presupuesto entre 1 y 20 millones
+        "presupuesto_por_episodio": round(random.uniform(1.0, 20.0), 2)
+    }
+    detalles_produccion_data.append(detalles)
+
+if detalles_produccion_data:
+    collection_produccion.insert_many(detalles_produccion_data)
+    print(f"✅ Se han insertado {len(detalles_produccion_data)} documentos en 'detalles_produccion'.")
+
+
+# 6.2 Consulta con $lookup (Series Finalizadas, Puntuación > 8.0 y de EE.UU.)
+
+print("\n🔄 Realizando consulta de unión (Finalizadas, >8.0, EE.UU.)...")
+
+pipeline_join = [
+    # 1. $match en la colección series (Series Finalizadas y Puntuación > 8.0)
+    {"$match": {
+        "finalizada": True,
+        "puntuacion": {"$gt": 8.0}
+    }},
+    # 2. $lookup: Unir con detalles_produccion
+    {"$lookup": {
+        "from": "detalles_produccion", # Nombre de la colección a unir
+        "localField": "titulo",         # Campo en la colección actual (series)
+        "foreignField": "titulo",       # Campo en la colección unida (detalles_produccion)
+        "as": "detalles"                # Nombre del array donde se almacenará el resultado
+    }},
+    # 3. $unwind: Descomponer el array 'detalles' (asumiendo que hay 1 a 1 por título)
+    {"$unwind": "$detalles"},
+    # 4. $match para filtrar por el campo de la colección unida (país_origen)
+    {"$match": {
+        "detalles.pais_origen": "EE.UU."
+    }},
+    # 5. $project: Limpiar y seleccionar los campos a mostrar
+    {"$project": {
+        "_id": 0,
+        "titulo": 1,
+        "plataforma": 1,
+        "puntuacion": 1,
+        "pais_origen": "$detalles.pais_origen",
+        "presupuesto": "$detalles.presupuesto_por_episodio"
+    }}
+]
+
+resultados_join = list(collection_series.aggregate(pipeline_join))
+
+if resultados_join:
+    print(f"✅ Se encontraron {len(resultados_join)} series que cumplen los criterios:")
+    for doc in resultados_join:
+        print(f"  - Título: {doc['titulo']} | Plataforma: {doc['plataforma']} | Puntuación: {doc['puntuacion']} | País: {doc['pais_origen']}")
+else:
+    print("⚠️ No se encontraron series que cumplan el criterio (Finalizadas >8.0 y de EE.UU.).")
+
+# =========================================================
+# 3. Consultas (Puntos A, B, C, D originales)
+# =========================================================
+
+# (Se mantienen los puntos 3 y 4 originales, usando collection_series)
+# ... (Tu código para consultas y exportación aquí)
+
+# =========================================================
 # 4. Exportación y Limpieza
-# ---------------------------------------------------------
+# =========================================================
 
 def exportar_a_json(query, nombre_archivo, descripcion):
     """
     Ejecuta la query, limpia el _id y guarda en JSON.
     """
     # Ejecutamos la consulta
-    cursor = collection.find(query)
+    cursor = collection_series.find(query)
     resultados = list(cursor)
     
     # Limpieza: Convertir ObjectId a string
@@ -126,7 +228,30 @@ def exportar_a_json(query, nombre_archivo, descripcion):
     except IOError as e:
         print(f"❌ Error al guardar {nombre_archivo}: {e}")
 
-print("\n--- Iniciando Exportación ---")
+# A. Maratones Largas: > 5 temporadas y puntuación > 8.0
+query_maratones = {
+    "temporadas": {"$gt": 5},
+    "puntuacion": {"$gt": 8.0}
+}
+
+# B. Joyas Recientes de Comedia: Género "Comedia" y año >= 2020
+query_comedias = {
+    "genero": "Comedia",
+    "año_estreno": {"$gte": 2020}
+}
+
+# C. Contenido Finalizado: finalizada es True
+query_finalizadas = {
+    "finalizada": True
+}
+
+# D. Inventada: "Originales de Netflix Aclamados"
+query_netflix_top = {
+    "plataforma": "Netflix",
+    "puntuacion": {"$gte": 9.0}
+}
+
+print("\n--- Iniciando Exportación (Puntos originales) ---")
 
 exportar_a_json(query_maratones, "maratones.json", "Maratones Largas")
 exportar_a_json(query_comedias, "comedias_recientes.json", "Joyas de Comedia")

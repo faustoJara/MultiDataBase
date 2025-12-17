@@ -1,55 +1,84 @@
 [
     {
-        "_id": "6942dab27535bc6c1b6822ed",
-        "titulo": "Tax raise",
-        "plataforma": "Disney+",
-        "temporadas": 7,
+        "_id": "6942def70cfa5d64d150f1a6",
+        "titulo": "Assimilated radical website",
+        "plataforma": "HBO Max",
+        "temporadas": 8,
         "genero": [
+            "Comedia",
+            "Drama"
+        ],
+        "puntuacion": 6.4,
+        "finalizada": true,
+        "año_estreno": 2023
+    },
+    {
+        "_id": "6942def70cfa5d64d150f1aa",
+        "titulo": "Virtual asymmetric parallelism",
+        "plataforma": "Amazon Prime",
+        "temporadas": 8,
+        "genero": [
+            "Terror",
+            "Thriller",
             "Comedia"
         ],
-        "puntuacion": 5.8,
+        "puntuacion": 6.4,
         "finalizada": false,
+        "año_estreno": 2024
+    },
+    {
+        "_id": "6942def70cfa5d64d150f1b0",
+        "titulo": "Function-based 5thgeneration analyzer",
+        "plataforma": "Amazon Prime",
+        "temporadas": 11,
+        "genero": [
+            "Documental",
+            "Terror",
+            "Comedia"
+        ],
+        "puntuacion": 7.8,
+        "finalizada": true,
         "año_estreno": 2021
     },
     {
-        "_id": "6942dab27535bc6c1b682306",
-        "titulo": "Community address",
-        "plataforma": "Amazon Prime",
-        "temporadas": 14,
+        "_id": "6942def70cfa5d64d150f1b5",
+        "titulo": "Self-enabling 24hour leverage",
+        "plataforma": "Netflix",
+        "temporadas": 3,
+        "genero": [
+            "Comedia",
+            "Acción",
+            "Sci-Fi"
+        ],
+        "puntuacion": 9.1,
+        "finalizada": false,
+        "año_estreno": 2023
+    },
+    {
+        "_id": "6942def70cfa5d64d150f1c2",
+        "titulo": "Integrated demand-driven software",
+        "plataforma": "Disney+",
+        "temporadas": 3,
+        "genero": [
+            "Acción",
+            "Comedia",
+            "Terror"
+        ],
+        "puntuacion": 9.6,
+        "finalizada": false,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942def70cfa5d64d150f1c4",
+        "titulo": "Optimized encompassing knowledge user",
+        "plataforma": "Disney+",
+        "temporadas": 6,
         "genero": [
             "Terror",
-            "Comedia",
-            "Acción"
-        ],
-        "puntuacion": 6.0,
-        "finalizada": false,
-        "año_estreno": 2020
-    },
-    {
-        "_id": "6942dab27535bc6c1b682316",
-        "titulo": "Water generation",
-        "plataforma": "Disney+",
-        "temporadas": 1,
-        "genero": [
-            "Documental",
-            "Sci-Fi",
             "Comedia"
         ],
-        "puntuacion": 6.7,
-        "finalizada": false,
-        "año_estreno": 2024
-    },
-    {
-        "_id": "6942dab27535bc6c1b682318",
-        "titulo": "Song number picture",
-        "plataforma": "Disney+",
-        "temporadas": 5,
-        "genero": [
-            "Documental",
-            "Comedia"
-        ],
-        "puntuacion": 9.3,
-        "finalizada": false,
-        "año_estreno": 2024
+        "puntuacion": 5.4,
+        "finalizada": true,
+        "año_estreno": 2021
     }
 ]
