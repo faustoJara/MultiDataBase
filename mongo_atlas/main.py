@@ -33,7 +33,7 @@ try:
     # Colección principal
     collection_series = db["series"]
     
-    # Nueva colección para el punto 6
+    # Nueva colección
     collection_produccion = db["detalles_produccion"] 
     
     # Limpiamos ambas colecciones antes de empezar
@@ -258,4 +258,61 @@ exportar_a_json(query_comedias, "comedias_recientes.json", "Joyas de Comedia")
 exportar_a_json(query_finalizadas, "series_finalizadas.json", "Series Finalizadas")
 exportar_a_json(query_netflix_top, "netflix_top.json", "Top Netflix (Inventada)")
 
-print("\n✅ Proceso finalizado con éxito.")
+# =========================================================
+# 7. Gasto Financiero (Cálculo y Exportación)
+# =========================================================
+
+print("\n--- 7. Cálculo del Gasto Financiero Total ---")
+
+# Constante de episodios por temporada
+EPISODIOS_POR_TEMPORADA = 8
+
+pipeline_costo_total = [
+    # 1. $lookup: Unir series con detalles_produccion (Usando 'titulo')
+    {"$lookup": {
+        "from": "detalles_produccion", 
+        "localField": "titulo",         
+        "foreignField": "titulo",       
+        "as": "produccion"                
+    }},
+    # 2. $unwind: Descomponer el array de 'produccion'
+    {"$unwind": "$produccion"},
+    
+    # 3. $project: Calcular el costo total y seleccionar los campos a mostrar
+    {"$project": {
+        "_id": 0,
+        "titulo": 1,
+        # Cálculo: (temporadas * 8) * presupuesto_por_episodio
+        "coste_total": {
+            "$multiply": [
+                "$produccion.presupuesto_por_episodio", 
+                {"$multiply": ["$temporadas", EPISODIOS_POR_TEMPORADA]}
+            ]
+        },
+        # Incluimos estos campos para verificación, aunque solo pediste título y coste
+        "temporadas": 1,
+        "presupuesto_episodio": "$produccion.presupuesto_por_episodio"
+    }},
+    # 4. $project (Opcional): Simplificar la salida final a solo título y coste total
+    {"$project": {
+        "titulo": 1,
+        "coste_total_millones": {"$round": ["$coste_total", 2]} # Redondeamos a 2 decimales
+    }}
+]
+
+resultados_costo = list(collection_series.aggregate(pipeline_costo_total))
+
+def exportar_costo_a_json(data, nombre_archivo, descripcion):
+    """
+    Guarda los resultados de agregación en un JSON.
+    """
+    try:
+        with open(nombre_archivo, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+        print(f"📁 {descripcion}: {len(data)} registros exportados a '{nombre_archivo}'")
+    except IOError as e:
+        print(f"❌ Error al guardar {nombre_archivo}: {e}")
+
+exportar_costo_a_json(resultados_costo, "gasto_financiero.json", "Costo Total de las Series")
+
+print("\n✅ Cálculo del gasto financiero finalizado y exportado.")

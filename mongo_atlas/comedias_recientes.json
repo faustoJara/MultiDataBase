@@ -1,84 +1,65 @@
 [
     {
-        "_id": "6942def70cfa5d64d150f1a6",
-        "titulo": "Assimilated radical website",
-        "plataforma": "HBO Max",
-        "temporadas": 8,
+        "_id": "6942e9e6ddc3c2e11420830d",
+        "titulo": "Face-to-face object-oriented time-frame",
+        "plataforma": "Amazon Prime",
+        "temporadas": 4,
         "genero": [
-            "Comedia",
-            "Drama"
+            "Acción",
+            "Comedia"
         ],
-        "puntuacion": 6.4,
+        "puntuacion": 6.9,
         "finalizada": true,
         "año_estreno": 2023
     },
     {
-        "_id": "6942def70cfa5d64d150f1aa",
-        "titulo": "Virtual asymmetric parallelism",
-        "plataforma": "Amazon Prime",
-        "temporadas": 8,
+        "_id": "6942e9e6ddc3c2e114208316",
+        "titulo": "Multi-tiered neutral strategy",
+        "plataforma": "Netflix",
+        "temporadas": 2,
         "genero": [
-            "Terror",
-            "Thriller",
             "Comedia"
         ],
-        "puntuacion": 6.4,
-        "finalizada": false,
-        "año_estreno": 2024
+        "puntuacion": 8.4,
+        "finalizada": true,
+        "año_estreno": 2020
     },
     {
-        "_id": "6942def70cfa5d64d150f1b0",
-        "titulo": "Function-based 5thgeneration analyzer",
-        "plataforma": "Amazon Prime",
+        "_id": "6942e9e6ddc3c2e114208330",
+        "titulo": "Upgradable responsive installation",
+        "plataforma": "Netflix",
         "temporadas": 11,
         "genero": [
-            "Documental",
-            "Terror",
-            "Comedia"
-        ],
-        "puntuacion": 7.8,
-        "finalizada": true,
-        "año_estreno": 2021
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1b5",
-        "titulo": "Self-enabling 24hour leverage",
-        "plataforma": "Netflix",
-        "temporadas": 3,
-        "genero": [
             "Comedia",
-            "Acción",
             "Sci-Fi"
         ],
-        "puntuacion": 9.1,
+        "puntuacion": 5.4,
         "finalizada": false,
         "año_estreno": 2023
     },
     {
-        "_id": "6942def70cfa5d64d150f1c2",
-        "titulo": "Integrated demand-driven software",
-        "plataforma": "Disney+",
-        "temporadas": 3,
+        "_id": "6942e9e6ddc3c2e11420833a",
+        "titulo": "Quality-focused didactic pricing structure",
+        "plataforma": "HBO Max",
+        "temporadas": 2,
         "genero": [
-            "Acción",
-            "Comedia",
-            "Terror"
+            "Sci-Fi",
+            "Comedia"
         ],
-        "puntuacion": 9.6,
-        "finalizada": false,
-        "año_estreno": 2022
+        "puntuacion": 9.2,
+        "finalizada": true,
+        "año_estreno": 2021
     },
     {
-        "_id": "6942def70cfa5d64d150f1c4",
-        "titulo": "Optimized encompassing knowledge user",
-        "plataforma": "Disney+",
-        "temporadas": 6,
+        "_id": "6942e9e6ddc3c2e114208341",
+        "titulo": "Integrated multi-tasking pricing structure",
+        "plataforma": "Netflix",
+        "temporadas": 9,
         "genero": [
             "Terror",
             "Comedia"
         ],
-        "puntuacion": 5.4,
-        "finalizada": true,
-        "año_estreno": 2021
+        "finalizada": false,
+        "año_estreno": 2024
     }
 ]

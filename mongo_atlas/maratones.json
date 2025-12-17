@@ -1,263 +1,96 @@
 [
     {
-        "_id": "6942def70cfa5d64d150f19c",
-        "titulo": "Diverse real-time service-desk",
-        "plataforma": "Disney+",
-        "temporadas": 14,
-        "genero": [
-            "Drama",
-            "Documental"
-        ],
-        "puntuacion": 8.1,
-        "finalizada": true,
-        "año_estreno": 2000
-    },
-    {
-        "_id": "6942def70cfa5d64d150f19e",
-        "titulo": "Enhanced static Graphic Interface",
-        "plataforma": "Apple TV+",
-        "temporadas": 11,
-        "genero": [
-            "Comedia",
-            "Drama",
-            "Sci-Fi"
-        ],
-        "puntuacion": 9.2,
-        "finalizada": false,
-        "año_estreno": 2003
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1a1",
-        "titulo": "Digitized motivating analyzer",
+        "_id": "6942e9e6ddc3c2e11420830e",
+        "titulo": "Total analyzing analyzer",
         "plataforma": "Apple TV+",
         "temporadas": 10,
         "genero": [
-            "Documental",
             "Thriller",
-            "Comedia"
-        ],
-        "puntuacion": 9.2,
-        "finalizada": true,
-        "año_estreno": 2013
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1a3",
-        "titulo": "Implemented asynchronous customer loyalty",
-        "plataforma": "HBO Max",
-        "temporadas": 8,
-        "genero": [
-            "Sci-Fi",
-            "Terror"
-        ],
-        "puntuacion": 8.5,
-        "finalizada": true,
-        "año_estreno": 2019
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1a5",
-        "titulo": "Versatile heuristic encoding",
-        "plataforma": "Netflix",
-        "temporadas": 8,
-        "genero": [
-            "Documental",
-            "Comedia",
+            "Drama",
             "Acción"
         ],
-        "puntuacion": 8.5,
+        "puntuacion": 9.7,
         "finalizada": true,
-        "año_estreno": 2011
+        "año_estreno": 2009
     },
     {
-        "_id": "6942def70cfa5d64d150f1a8",
-        "titulo": "Enhanced executive neural-net",
+        "_id": "6942e9e6ddc3c2e11420831a",
+        "titulo": "Pre-emptive dynamic concept",
         "plataforma": "Apple TV+",
-        "temporadas": 11,
+        "temporadas": 8,
         "genero": [
-            "Terror"
+            "Terror",
+            "Drama"
         ],
-        "puntuacion": 8.7,
-        "finalizada": true,
-        "año_estreno": 2007
+        "puntuacion": 9.4,
+        "finalizada": false,
+        "año_estreno": 2022
     },
     {
-        "_id": "6942def70cfa5d64d150f1a9",
-        "titulo": "Multi-channeled bifurcated analyzer",
-        "plataforma": "Netflix",
+        "_id": "6942e9e6ddc3c2e11420831c",
+        "titulo": "Versatile regional migration",
+        "plataforma": "HBO Max",
         "temporadas": 13,
         "genero": [
-            "Terror"
+            "Documental",
+            "Acción",
+            "Thriller"
         ],
-        "puntuacion": 9.1,
+        "puntuacion": 9.3,
         "finalizada": false,
         "año_estreno": 2002
     },
     {
-        "_id": "6942def70cfa5d64d150f1ab",
-        "titulo": "Balanced asynchronous functionalities",
-        "plataforma": "HBO Max",
-        "temporadas": 8,
-        "genero": [
-            "Documental"
-        ],
-        "puntuacion": 8.3,
-        "finalizada": false,
-        "año_estreno": 2001
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1ad",
-        "titulo": "Synergistic dynamic frame",
-        "plataforma": "Netflix",
-        "temporadas": 15,
-        "genero": [
-            "Thriller",
-            "Sci-Fi",
-            "Drama"
-        ],
-        "puntuacion": 8.3,
-        "finalizada": false,
-        "año_estreno": 2001
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1b1",
-        "titulo": "Innovative radical open system",
-        "plataforma": "Amazon Prime",
-        "temporadas": 6,
-        "genero": [
-            "Drama",
-            "Sci-Fi"
-        ],
-        "puntuacion": 8.4,
-        "finalizada": true,
-        "año_estreno": 2010
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1b4",
-        "titulo": "Business-focused leadingedge policy",
+        "_id": "6942e9e6ddc3c2e11420831d",
+        "titulo": "Seamless value-added adapter",
         "plataforma": "Apple TV+",
-        "temporadas": 6,
-        "genero": [
-            "Sci-Fi",
-            "Drama"
-        ],
-        "puntuacion": 8.6,
-        "finalizada": false,
-        "año_estreno": 2018
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1b7",
-        "titulo": "Optimized stable function",
-        "plataforma": "HBO Max",
-        "temporadas": 7,
-        "genero": [
-            "Sci-Fi",
-            "Terror"
-        ],
-        "puntuacion": 8.8,
-        "finalizada": true,
-        "año_estreno": 2013
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1bf",
-        "titulo": "Digitized mobile task-force",
-        "plataforma": "Disney+",
-        "temporadas": 14,
-        "genero": [
-            "Thriller"
-        ],
-        "puntuacion": 10.0,
-        "finalizada": true,
-        "año_estreno": 2014
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1c0",
-        "titulo": "Synchronized uniform adapter",
-        "plataforma": "HBO Max",
-        "temporadas": 14,
+        "temporadas": 10,
         "genero": [
             "Acción",
+            "Drama",
             "Terror"
         ],
-        "puntuacion": 9.5,
+        "puntuacion": 9.4,
         "finalizada": true,
-        "año_estreno": 2015
+        "año_estreno": 2020
     },
     {
-        "_id": "6942def70cfa5d64d150f1c1",
-        "titulo": "Optimized attitude-oriented functionalities",
-        "plataforma": "Disney+",
-        "temporadas": 14,
-        "genero": [
-            "Sci-Fi",
-            "Comedia",
-            "Terror"
-        ],
-        "puntuacion": 8.7,
-        "finalizada": true,
-        "año_estreno": 2003
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1c6",
-        "titulo": "Self-enabling 24/7 frame",
-        "plataforma": "Disney+",
-        "temporadas": 13,
-        "genero": [
-            "Documental"
-        ],
-        "puntuacion": 8.4,
-        "finalizada": false,
-        "año_estreno": 2021
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1c7",
-        "titulo": "Upgradable 24/7 collaboration",
-        "plataforma": "Disney+",
+        "_id": "6942e9e6ddc3c2e114208323",
+        "titulo": "Persevering explicit model",
+        "plataforma": "Amazon Prime",
         "temporadas": 12,
         "genero": [
-            "Terror",
-            "Acción",
-            "Drama"
+            "Sci-Fi",
+            "Comedia"
         ],
-        "puntuacion": 8.7,
+        "puntuacion": 9.2,
         "finalizada": true,
-        "año_estreno": 2024
+        "año_estreno": 2004
     },
     {
-        "_id": "6942def70cfa5d64d150f1c8",
-        "titulo": "Front-line uniform solution",
-        "plataforma": "Disney+",
-        "temporadas": 6,
-        "genero": [
-            "Documental"
-        ],
-        "puntuacion": 8.4,
-        "finalizada": false,
-        "año_estreno": 2019
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1cb",
-        "titulo": "Enterprise-wide static knowledgebase",
-        "plataforma": "Disney+",
-        "temporadas": 6,
-        "genero": [
-            "Documental",
-            "Terror"
-        ],
-        "puntuacion": 9.0,
-        "finalizada": true,
-        "año_estreno": 2019
-    },
-    {
-        "_id": "6942def70cfa5d64d150f1cc",
-        "titulo": "Right-sized multimedia migration",
+        "_id": "6942e9e6ddc3c2e11420832a",
+        "titulo": "Proactive multi-tasking knowledgebase",
         "plataforma": "Apple TV+",
-        "temporadas": 14,
+        "temporadas": 7,
         "genero": [
             "Thriller",
-            "Sci-Fi",
             "Terror"
         ],
         "puntuacion": 9.7,
-        "finalizada": false,
-        "año_estreno": 2015
+        "finalizada": true,
+        "año_estreno": 2019
+    },
+    {
+        "_id": "6942e9e6ddc3c2e11420833b",
+        "titulo": "User-centric client-driven intranet",
+        "plataforma": "Netflix",
+        "temporadas": 9,
+        "genero": [
+            "Acción",
+            "Thriller"
+        ],
+        "puntuacion": 8.7,
+        "finalizada": true,
+        "año_estreno": 2017
     }
 ]
