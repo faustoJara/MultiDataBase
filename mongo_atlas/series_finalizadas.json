@@ -1,0 +1,395 @@
+[
+    {
+        "_id": "6942dab27535bc6c1b6822e7",
+        "titulo": "Often son approach",
+        "plataforma": "Apple TV+",
+        "temporadas": 10,
+        "genero": [
+            "Acción"
+        ],
+        "puntuacion": 9.4,
+        "finalizada": true,
+        "año_estreno": 2014
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822e8",
+        "titulo": "Never store letter",
+        "plataforma": "Netflix",
+        "temporadas": 11,
+        "genero": [
+            "Terror"
+        ],
+        "puntuacion": 8.9,
+        "finalizada": true,
+        "año_estreno": 2005
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822e9",
+        "titulo": "Risk teacher game",
+        "plataforma": "HBO Max",
+        "temporadas": 7,
+        "genero": [
+            "Acción",
+            "Thriller",
+            "Terror"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822ea",
+        "titulo": "Message act",
+        "plataforma": "Netflix",
+        "temporadas": 4,
+        "genero": [
+            "Terror",
+            "Drama"
+        ],
+        "puntuacion": 9.6,
+        "finalizada": true,
+        "año_estreno": 2010
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822ef",
+        "titulo": "Century agent",
+        "plataforma": "Netflix",
+        "temporadas": 12,
+        "genero": [
+            "Acción",
+            "Terror"
+        ],
+        "puntuacion": 5.1,
+        "finalizada": true,
+        "año_estreno": 2015
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f0",
+        "titulo": "Series growth social",
+        "plataforma": "Netflix",
+        "temporadas": 14,
+        "genero": [
+            "Sci-Fi",
+            "Drama",
+            "Acción"
+        ],
+        "puntuacion": 9.2,
+        "finalizada": true,
+        "año_estreno": 2017
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f2",
+        "titulo": "Reach main control",
+        "plataforma": "Amazon Prime",
+        "temporadas": 8,
+        "genero": [
+            "Acción",
+            "Documental",
+            "Sci-Fi"
+        ],
+        "puntuacion": 6.4,
+        "finalizada": true,
+        "año_estreno": 2001
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f6",
+        "titulo": "But now",
+        "plataforma": "Disney+",
+        "temporadas": 14,
+        "genero": [
+            "Documental"
+        ],
+        "puntuacion": 6.3,
+        "finalizada": true,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f8",
+        "titulo": "Pull picture",
+        "plataforma": "Disney+",
+        "temporadas": 8,
+        "genero": [
+            "Drama",
+            "Sci-Fi"
+        ],
+        "puntuacion": 8.0,
+        "finalizada": true,
+        "año_estreno": 2020
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f9",
+        "titulo": "The want loss",
+        "plataforma": "Netflix",
+        "temporadas": 9,
+        "genero": [
+            "Comedia",
+            "Documental"
+        ],
+        "puntuacion": 5.1,
+        "finalizada": true,
+        "año_estreno": 2015
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fb",
+        "titulo": "Resource cold fear",
+        "plataforma": "Amazon Prime",
+        "temporadas": 14,
+        "genero": [
+            "Thriller",
+            "Comedia"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2005
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fc",
+        "titulo": "Result side surface",
+        "plataforma": "Apple TV+",
+        "temporadas": 3,
+        "genero": [
+            "Documental",
+            "Terror",
+            "Comedia"
+        ],
+        "puntuacion": 9.4,
+        "finalizada": true,
+        "año_estreno": 2016
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fd",
+        "titulo": "Much line",
+        "plataforma": "Disney+",
+        "temporadas": 2,
+        "genero": [
+            "Terror"
+        ],
+        "puntuacion": 7.9,
+        "finalizada": true,
+        "año_estreno": 2024
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fe",
+        "titulo": "Fight walk",
+        "plataforma": "Amazon Prime",
+        "temporadas": 14,
+        "genero": [
+            "Drama",
+            "Comedia"
+        ],
+        "puntuacion": 6.5,
+        "finalizada": true,
+        "año_estreno": 2013
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822ff",
+        "titulo": "Produce policy",
+        "plataforma": "Netflix",
+        "temporadas": 7,
+        "genero": [
+            "Comedia",
+            "Terror"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2015
+    },
+    {
+        "_id": "6942dab27535bc6c1b682302",
+        "titulo": "Agreement energy project",
+        "plataforma": "Disney+",
+        "temporadas": 10,
+        "genero": [
+            "Documental"
+        ],
+        "puntuacion": 6.5,
+        "finalizada": true,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942dab27535bc6c1b682304",
+        "titulo": "Kid main agency soon",
+        "plataforma": "Netflix",
+        "temporadas": 2,
+        "genero": [
+            "Terror",
+            "Documental"
+        ],
+        "puntuacion": 6.4,
+        "finalizada": true,
+        "año_estreno": 2011
+    },
+    {
+        "_id": "6942dab27535bc6c1b682305",
+        "titulo": "Able treat",
+        "plataforma": "Amazon Prime",
+        "temporadas": 5,
+        "genero": [
+            "Acción",
+            "Documental",
+            "Drama"
+        ],
+        "puntuacion": 7.7,
+        "finalizada": true,
+        "año_estreno": 2008
+    },
+    {
+        "_id": "6942dab27535bc6c1b682307",
+        "titulo": "Hair local indicate",
+        "plataforma": "Netflix",
+        "temporadas": 1,
+        "genero": [
+            "Acción"
+        ],
+        "puntuacion": 7.3,
+        "finalizada": true,
+        "año_estreno": 2009
+    },
+    {
+        "_id": "6942dab27535bc6c1b68230d",
+        "titulo": "Little almost",
+        "plataforma": "Netflix",
+        "temporadas": 12,
+        "genero": [
+            "Acción",
+            "Documental"
+        ],
+        "puntuacion": 8.1,
+        "finalizada": true,
+        "año_estreno": 2001
+    },
+    {
+        "_id": "6942dab27535bc6c1b68230e",
+        "titulo": "Rate full",
+        "plataforma": "Apple TV+",
+        "temporadas": 1,
+        "genero": [
+            "Documental",
+            "Sci-Fi"
+        ],
+        "puntuacion": 6.7,
+        "finalizada": true,
+        "año_estreno": 2014
+    },
+    {
+        "_id": "6942dab27535bc6c1b682313",
+        "titulo": "Speech ago available",
+        "plataforma": "Disney+",
+        "temporadas": 11,
+        "genero": [
+            "Drama"
+        ],
+        "puntuacion": 9.1,
+        "finalizada": true,
+        "año_estreno": 2013
+    },
+    {
+        "_id": "6942dab27535bc6c1b682314",
+        "titulo": "Same day blue",
+        "plataforma": "Netflix",
+        "temporadas": 6,
+        "genero": [
+            "Sci-Fi",
+            "Drama",
+            "Comedia"
+        ],
+        "puntuacion": 6.0,
+        "finalizada": true,
+        "año_estreno": 2001
+    },
+    {
+        "_id": "6942dab27535bc6c1b682315",
+        "titulo": "Commercial share great",
+        "plataforma": "HBO Max",
+        "temporadas": 11,
+        "genero": [
+            "Acción",
+            "Thriller",
+            "Drama"
+        ],
+        "puntuacion": 6.1,
+        "finalizada": true,
+        "año_estreno": 2008
+    },
+    {
+        "_id": "6942dab27535bc6c1b682317",
+        "titulo": "All stay crime",
+        "plataforma": "Apple TV+",
+        "temporadas": 7,
+        "genero": [
+            "Terror",
+            "Thriller",
+            "Acción"
+        ],
+        "puntuacion": 6.0,
+        "finalizada": true,
+        "año_estreno": 2006
+    },
+    {
+        "_id": "6942dab27535bc6c1b68231a",
+        "titulo": "Push every",
+        "plataforma": "Disney+",
+        "temporadas": 8,
+        "genero": [
+            "Terror"
+        ],
+        "finalizada": true,
+        "año_estreno": 2019
+    },
+    {
+        "_id": "6942dab27535bc6c1b68231d",
+        "titulo": "Industry foot street",
+        "plataforma": "Apple TV+",
+        "temporadas": 13,
+        "puntuacion": 6.9,
+        "finalizada": true,
+        "año_estreno": 2006
+    },
+    {
+        "_id": "6942dab27535bc6c1b68231e",
+        "titulo": "Community decision reach can",
+        "plataforma": "Apple TV+",
+        "temporadas": 11,
+        "genero": [
+            "Drama",
+            "Thriller"
+        ],
+        "puntuacion": 9.5,
+        "finalizada": true
+    },
+    {
+        "_id": "6942dab27535bc6c1b682320",
+        "titulo": "Put",
+        "plataforma": "Disney+",
+        "temporadas": 14,
+        "genero": [
+            "Acción"
+        ],
+        "finalizada": true,
+        "año_estreno": 2001
+    },
+    {
+        "_id": "6942dab27535bc6c1b682321",
+        "titulo": "Such company wonder than",
+        "plataforma": "Netflix",
+        "temporadas": 1,
+        "genero": [
+            "Sci-Fi",
+            "Drama"
+        ],
+        "finalizada": true,
+        "año_estreno": 2014
+    },
+    {
+        "_id": "6942dab27535bc6c1b682322",
+        "titulo": "Nature note manager",
+        "plataforma": "Amazon Prime",
+        "genero": [
+            "Documental",
+            "Terror"
+        ],
+        "puntuacion": 6.1,
+        "finalizada": true,
+        "año_estreno": 2009
+    }
+]

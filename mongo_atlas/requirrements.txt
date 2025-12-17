@@ -1,0 +1,4 @@
+pymongo
+faker
+python3
+python-detenv

@@ -1,0 +1,54 @@
+[
+    {
+        "_id": "6942dab27535bc6c1b6822ea",
+        "titulo": "Message act",
+        "plataforma": "Netflix",
+        "temporadas": 4,
+        "genero": [
+            "Terror",
+            "Drama"
+        ],
+        "puntuacion": 9.6,
+        "finalizada": true,
+        "año_estreno": 2010
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f0",
+        "titulo": "Series growth social",
+        "plataforma": "Netflix",
+        "temporadas": 14,
+        "genero": [
+            "Sci-Fi",
+            "Drama",
+            "Acción"
+        ],
+        "puntuacion": 9.2,
+        "finalizada": true,
+        "año_estreno": 2017
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f7",
+        "titulo": "Charge science",
+        "plataforma": "Netflix",
+        "temporadas": 1,
+        "genero": [
+            "Terror"
+        ],
+        "puntuacion": 9.5,
+        "finalizada": false,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822ff",
+        "titulo": "Produce policy",
+        "plataforma": "Netflix",
+        "temporadas": 7,
+        "genero": [
+            "Comedia",
+            "Terror"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2015
+    }
+]

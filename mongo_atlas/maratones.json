@@ -1,0 +1,158 @@
+[
+    {
+        "_id": "6942dab27535bc6c1b6822e7",
+        "titulo": "Often son approach",
+        "plataforma": "Apple TV+",
+        "temporadas": 10,
+        "genero": [
+            "Acción"
+        ],
+        "puntuacion": 9.4,
+        "finalizada": true,
+        "año_estreno": 2014
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822e8",
+        "titulo": "Never store letter",
+        "plataforma": "Netflix",
+        "temporadas": 11,
+        "genero": [
+            "Terror"
+        ],
+        "puntuacion": 8.9,
+        "finalizada": true,
+        "año_estreno": 2005
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822e9",
+        "titulo": "Risk teacher game",
+        "plataforma": "HBO Max",
+        "temporadas": 7,
+        "genero": [
+            "Acción",
+            "Thriller",
+            "Terror"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2022
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822f0",
+        "titulo": "Series growth social",
+        "plataforma": "Netflix",
+        "temporadas": 14,
+        "genero": [
+            "Sci-Fi",
+            "Drama",
+            "Acción"
+        ],
+        "puntuacion": 9.2,
+        "finalizada": true,
+        "año_estreno": 2017
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fa",
+        "titulo": "Despite",
+        "plataforma": "Disney+",
+        "temporadas": 11,
+        "genero": [
+            "Terror",
+            "Documental",
+            "Drama"
+        ],
+        "puntuacion": 8.5,
+        "finalizada": false,
+        "año_estreno": 2021
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822fb",
+        "titulo": "Resource cold fear",
+        "plataforma": "Amazon Prime",
+        "temporadas": 14,
+        "genero": [
+            "Thriller",
+            "Comedia"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2005
+    },
+    {
+        "_id": "6942dab27535bc6c1b6822ff",
+        "titulo": "Produce policy",
+        "plataforma": "Netflix",
+        "temporadas": 7,
+        "genero": [
+            "Comedia",
+            "Terror"
+        ],
+        "puntuacion": 9.9,
+        "finalizada": true,
+        "año_estreno": 2015
+    },
+    {
+        "_id": "6942dab27535bc6c1b68230d",
+        "titulo": "Little almost",
+        "plataforma": "Netflix",
+        "temporadas": 12,
+        "genero": [
+            "Acción",
+            "Documental"
+        ],
+        "puntuacion": 8.1,
+        "finalizada": true,
+        "año_estreno": 2001
+    },
+    {
+        "_id": "6942dab27535bc6c1b682311",
+        "titulo": "Plant positive behind",
+        "plataforma": "Apple TV+",
+        "temporadas": 15,
+        "genero": [
+            "Acción",
+            "Drama",
+            "Comedia"
+        ],
+        "puntuacion": 8.8,
+        "finalizada": false,
+        "año_estreno": 2000
+    },
+    {
+        "_id": "6942dab27535bc6c1b682313",
+        "titulo": "Speech ago available",
+        "plataforma": "Disney+",
+        "temporadas": 11,
+        "genero": [
+            "Drama"
+        ],
+        "puntuacion": 9.1,
+        "finalizada": true,
+        "año_estreno": 2013
+    },
+    {
+        "_id": "6942dab27535bc6c1b68231b",
+        "titulo": "Yeah order lead",
+        "plataforma": "Amazon Prime",
+        "temporadas": 12,
+        "genero": [
+            "Drama",
+            "Thriller",
+            "Sci-Fi"
+        ],
+        "puntuacion": 9.7,
+        "finalizada": false
+    },
+    {
+        "_id": "6942dab27535bc6c1b68231e",
+        "titulo": "Community decision reach can",
+        "plataforma": "Apple TV+",
+        "temporadas": 11,
+        "genero": [
+            "Drama",
+            "Thriller"
+        ],
+        "puntuacion": 9.5,
+        "finalizada": true
+    }
+]

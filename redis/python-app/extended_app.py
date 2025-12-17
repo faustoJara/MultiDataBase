@@ -27,7 +27,7 @@ def conectar():
     return r, conn
 
 # ---------------------------------------------------------
-# PASO 1: CARGA (MySQL -> Redis)
+# PASO 1: CARGA  DE DATOS (MySQL -> Redis)
 # ---------------------------------------------------------
 def paso_1_cargar_datos(r, conn):
     log("PASO 1", "Extrayendo de MySQL y cargando en Redis...")
@@ -110,7 +110,7 @@ def paso_2_crear_indice(r):
         print(f"Error creando índice: {e}")
 
 # ---------------------------------------------------------
-# PASO 3: CONSULTA INTELIGENTE (Redis hace el trabajo)
+# PASO 3: REDIS HACE EL TRABAJO PARA LA MIGRACIÓN
 # ---------------------------------------------------------
 def paso_3_consultar_y_migrar(r, conn):
     log("PASO 3", "Redis consulta sus datos y migramos el resultado a MySQL...")

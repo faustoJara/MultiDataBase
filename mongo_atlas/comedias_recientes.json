@@ -1,0 +1,55 @@
+[
+    {
+        "_id": "6942dab27535bc6c1b6822ed",
+        "titulo": "Tax raise",
+        "plataforma": "Disney+",
+        "temporadas": 7,
+        "genero": [
+            "Comedia"
+        ],
+        "puntuacion": 5.8,
+        "finalizada": false,
+        "año_estreno": 2021
+    },
+    {
+        "_id": "6942dab27535bc6c1b682306",
+        "titulo": "Community address",
+        "plataforma": "Amazon Prime",
+        "temporadas": 14,
+        "genero": [
+            "Terror",
+            "Comedia",
+            "Acción"
+        ],
+        "puntuacion": 6.0,
+        "finalizada": false,
+        "año_estreno": 2020
+    },
+    {
+        "_id": "6942dab27535bc6c1b682316",
+        "titulo": "Water generation",
+        "plataforma": "Disney+",
+        "temporadas": 1,
+        "genero": [
+            "Documental",
+            "Sci-Fi",
+            "Comedia"
+        ],
+        "puntuacion": 6.7,
+        "finalizada": false,
+        "año_estreno": 2024
+    },
+    {
+        "_id": "6942dab27535bc6c1b682318",
+        "titulo": "Song number picture",
+        "plataforma": "Disney+",
+        "temporadas": 5,
+        "genero": [
+            "Documental",
+            "Comedia"
+        ],
+        "puntuacion": 9.3,
+        "finalizada": false,
+        "año_estreno": 2024
+    }
+]
